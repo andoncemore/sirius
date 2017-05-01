@@ -25,6 +25,11 @@ class PrintForm(flask_wtf.Form):
         coerce=int,
         validators=[wtforms.validators.DataRequired()],
     )
+    face = wtforms.SelectField(
+        'Face',
+        coerce=int,
+        validators=[wtforms.validators.DataRequired()],
+    )
     message = wtforms.TextAreaField(
         'Message',
         validators=[wtforms.validators.DataRequired()],
@@ -60,20 +65,30 @@ def printer_print(printer_id):
         (x.id, x.name) for x in login.current_user.friends_printers()
     ]
     form.target_printer.choices = choices
+    form.face.choices = [(1, "Default face"), (2, "No face")]
 
     # Set default printer on get
     if flask.request.method != 'POST':
         form.target_printer.data = printer.id
+        form.face.data = 1
 
     if form.validate_on_submit():
         # TODO: move image encoding into a pthread.
         # TODO: use templating to avoid injection attacks
         pixels = image_encoding.default_pipeline(
             templating.default_template(form.message.data))
-        hardware_message = messages.SetDeliveryAndPrintNoFace(
-            device_address=printer.device_address,
-            pixels=pixels,
-        )
+
+        hardware_message = None
+        if form.face.data == 1:
+            hardware_message = messages.SetDeliveryAndPrintNoFace(
+                device_address=printer.device_address,
+                pixels=pixels,
+            )
+        else:
+            hardware_message = messages.SetDeliveryAndPrint(
+                device_address=printer.device_address,
+                pixels=pixels,
+            )
 
         # If a printer is "offline" then we won't find the printer
         # connected and success will be false.
