@@ -28,6 +28,7 @@ from sirius.web import login
 from sirius.web import admin
 from sirius.web import printer_print
 from sirius.web import printer_overview
+from sirius.web import external_api
 
 
 logger = logging.getLogger(__name__)
@@ -53,6 +54,7 @@ def create_app(config_name):
     app.register_blueprint(twitter.blueprint)
     app.register_blueprint(printer_overview.blueprint)
     app.register_blueprint(printer_print.blueprint)
+    app.register_blueprint(external_api.blueprint)
     app.register_blueprint(admin.blueprint)
 
     # Live interactions.

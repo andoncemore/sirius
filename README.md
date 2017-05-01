@@ -54,6 +54,18 @@ Navigate browser to http://127.0.0.1:5002/
 
 You should configure your BergCloud Bridge to point to your Sirius instance.
 
+### Using the external API
+
+If you want to print messages from your application, you can use the external API.
+
+For example, with curl:
+
+```bash
+curl \
+  --data '{"message": "<h1>hello</h1>", "face": "noface"}' \
+  http://127.0.0.1:5000/ext_api/v1/printer/1/print_html?api_key=<key>
+```
+
 ### Environment variables
 
 The server can be configured with the following variables:
