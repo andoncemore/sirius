@@ -27,7 +27,7 @@ class PrintForm(flask_wtf.Form):
     )
     face = wtforms.SelectField(
         'Face',
-        coerce=int,
+        coerce=unicode,
         validators=[wtforms.validators.DataRequired()],
     )
     message = wtforms.TextAreaField(
@@ -65,12 +65,12 @@ def printer_print(printer_id):
         (x.id, x.name) for x in login.current_user.friends_printers()
     ]
     form.target_printer.choices = choices
-    form.face.choices = [(1, "Default face"), (2, "No face")]
+    form.face.choices = [("default", "Default face"), ("noface", "No face")]
 
     # Set default printer on get
     if flask.request.method != 'POST':
         form.target_printer.data = printer.id
-        form.face.data = 1
+        form.face.data = "default"
 
     if form.validate_on_submit():
         # TODO: move image encoding into a pthread.
@@ -79,7 +79,7 @@ def printer_print(printer_id):
             templating.default_template(form.message.data))
 
         hardware_message = None
-        if form.face.data == 1:
+        if form.face.data == "noface":
             hardware_message = messages.SetDeliveryAndPrintNoFace(
                 device_address=printer.device_address,
                 pixels=pixels,
