@@ -58,3 +58,6 @@ target/
 
 # local data
 sirius/data.sqlite
+
+# Fake printer
+*.printer
