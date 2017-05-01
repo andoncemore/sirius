@@ -70,7 +70,7 @@ def printer_print(printer_id):
         # TODO: use templating to avoid injection attacks
         pixels = image_encoding.default_pipeline(
             templating.default_template(form.message.data))
-        hardware_message = messages.SetDeliveryAndPrint(
+        hardware_message = messages.SetDeliveryAndPrintNoFace(
             device_address=printer.device_address,
             pixels=pixels,
         )

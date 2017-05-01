@@ -9,7 +9,10 @@ Differences with the original project :
 
  * Update requirements.txt to fix some bugs
  * Improve documentation
-
+   * Add links from the community
+   * Add a guide for Debian
+ * Recommend PhantomJS 2.1.1 to support pictures
+ * Deactivate face printing by default (will add a switch soon)
 
 ## Using it
 
@@ -35,14 +38,16 @@ cd sirius
 
 pip install -r requirements.txt
 
-wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
-tar jxf phantomjs-1.9.8-linux-x86_64.tar.bz2
-sudo mv phantomjs-1.9.8-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+tar jxf phantomjs-2.1.1-linux-x86_64.tar.bz2
+sudo mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
 
 ./manage.py db upgrade head
 
 ~/.local/bin/gunicorn -k flask_sockets.worker manage:app -b 0.0.0.0:5002 -w 1
 ```
+
+*With PhantomJS 1.9.8 I can't print pictures but version 2.1.1 seems to fix the problem*.
 
 Navigate browser to http://127.0.0.1:5002/
 
