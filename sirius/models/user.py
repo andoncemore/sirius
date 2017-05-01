@@ -3,6 +3,8 @@ forgot-password/reset-password dance.
 """
 import collections
 import datetime
+import random
+import string
 
 from sirius.coding import claiming
 
@@ -17,6 +19,7 @@ class ClaimCodeInUse(Exception): pass
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    api_key = db.Column(db.String)
 
     # username can't be unique because we may have multiple identity
     # providers. For now we just copy the  twitter handle.
@@ -36,6 +39,9 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
+
+    def generate_api_key(self):
+        self.api_key = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
 
     def claim_printer(self, claim_code, name):
         """Claiming can happen before the printer "calls home" for the first

@@ -86,6 +86,15 @@ def claim(user_id, username):
         form=form,
     )
 
+@blueprint.route('/<int:user_id>/<username>/generate_api_key', methods=['POST'])
+@login.login_required
+def generate_api_key(user_id, username):
+    user = login.current_user
+    assert user_id == user.get_id()
+    assert username == user.username
+
+    user.generate_api_key()
+    return flask.redirect(flask.url_for('.landing'))
 
 @blueprint.route('/<int:user_id>/<username>/twitter-friend-refresh', methods=['POST'])
 @login.login_required

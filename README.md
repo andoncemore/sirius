@@ -13,6 +13,7 @@ Differences with the original project :
    * Add a guide for Debian
  * Recommend PhantomJS 2.1.1 to support pictures
  * Deactivate face printing by default (will add a switch soon)
+ * Add an API Key to make requests progamatically (will add documentation soon)
 
 ## Using it
 

@@ -71,8 +71,15 @@
 		<p>
 		(The list of people you follow on Twitter was last refreshed on {{ last_friend_refresh }}.)
 		</p>
-		</form>
+  </form>
 
+  <h1> Other </h1>
+  <p>Your API key : <em style="font-family: monospace" class="bg-warning">{{ current_user.api_key }}</em></p>
+  <form method="POST" action="{{ url_for('landing.generate_api_key',
+                  user_id=current_user.id,
+                  username=current_user.username) }}">
+		<button class="btn btn-default" type="submit">Regenerate</button>
+  </form>
 	</div>
 </div>
 {% endblock %}
