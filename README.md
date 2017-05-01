@@ -11,9 +11,8 @@ Differences with the original project :
  * Improve documentation
    * Add links from the community
    * Add a guide for Debian
- * Recommend PhantomJS 2.1.1 to support pictures
- * Deactivate face printing by default
- * Add an API Key to make requests progamatically (will add documentation soon)
+ * You can choose wether or not you want to print faces between messages
+ * Add an API Key to make requests progamatically
 
 ## Using it
 
