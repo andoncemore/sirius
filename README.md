@@ -1,4 +1,6 @@
-# Sirius - An alternative website for your CloudBerg Little Printer
+# Sirius - An alternative website for your Little Printer
+
+![CloudBerg Little Printer](https://i.vimeocdn.com/video/222115839_1280x720.jpg)
 
 This repository is a fork of [genmon/sirius](https://github.com/genmon/sirius).
 The main project doesn't seem to be maintained anymore.
