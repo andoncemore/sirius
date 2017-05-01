@@ -53,6 +53,21 @@ Navigate browser to http://127.0.0.1:5002/
 
 You should configure your BergCloud Bridge to point to your Sirius instance.
 
+If you want, you can create a systemd service, feel free to update this skeleton to fit your needs:
+
+```
+[Unit]
+Description=Sirius, webapp for Little Printer
+
+[Service]
+WorkingDirectory=/home/berg/sirius
+ExecStart=/home/berg/.local/bin/gunicorn -k flask_sockets.worker manage:app -b 0.0.0.0:5002 -w 1
+User=berg
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ### Using the external API
 
 If you want to print messages from your application, you can use the external API.
