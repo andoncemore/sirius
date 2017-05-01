@@ -1,4 +1,4 @@
-# Sirius
+# Sirius - An alternative website for your CloudBerg Little Printer
 
 This repository is a fork of [genmon/sirius](https://github.com/genmon/sirius).
 The main project doesn't seem to be maintained anymore.
