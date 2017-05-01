@@ -72,12 +72,52 @@ WantedBy=multi-user.target
 
 If you want to print messages from your application, you can use the external API.
 
-For example, with curl:
+
+#### With curl
 
 ```bash
 curl \
   --data '{"message": "<h1>hello</h1>", "face": "noface"}' \
   http://127.0.0.1:5000/ext_api/v1/printer/1/print_html?api_key=<key>
+```
+
+#### With Processing
+
+You'll need an external library named unirest and its dependencies.
+You can download it directly from my server : [unirest-java-1.4.10.jar](https://cloud.deuxfleurs.fr/f/685c77efbd/?raw=1)
+Or, if you prefer, you can compile it from the source by following this [guide](http://blog.mashape.com/installing-unirest-java-with-the-maven-assembly-plugin/).
+
+Once you have the `unirest-java-1.4.10.jar` (or another version):
+
+  1. Create a folder named `code` inside your sketchbook folder, next to your Processing files (use File explorer on Windows, Finder on Mac OS, etc.)
+  2. Put `unirest-java-1.4.10.jar` in this folder
+
+Now restart processing and add the following in your project:
+
+```processing
+import com.mashape.unirest.http.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+boolean little_print(String face, String message, String endpoint, String api_key) {
+  try {
+    com.mashape.unirest.http.HttpResponse<String> request = Unirest.post(endpoint+"?api_key="+api_key)
+      .body("{\"message\": \"" + message.replace("\"", "\\\"") +"\", \"face\": \"" + face.replace("\"", "\\\"") + "\"}")
+      .asString();
+  
+    println(request.getBody());
+    return true;
+  } catch (Exception e) {
+    println(e);
+    return false;
+  }
+}
+
+```
+
+Each time you want to use your little printer to print something, you should write something like this (don't forget to put your API key and update the URL):
+
+```processing
+little_print("noface", "<h1 style=\"margin-top: 100px\"> PROOOOCESSING </h1>", "http://127.0.0.1:5000/ext_api/v1/printer/1/print_html", "xxxxxxxxx");
 ```
 
 ### Environment variables
