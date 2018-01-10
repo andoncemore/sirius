@@ -61,9 +61,8 @@ def crop_384(im):
     return im.crop((0, 0, 384, min(h, 10000)))
 
 
-def threshold(im):
-    thresholded = ''.join(pixel_to_bw(x) for x in im.convert('RGBA').getdata())
-    return Image.fromstring('L', im.size, thresholded)
+def convert_to_1bit(im):
+    return im.convert('1')
 
 
 def rle_from_bw(bw_image):
@@ -132,6 +131,10 @@ def html_to_png(html):
 def default_pipeline(html):
     """Encode HTML into an RLE image."""
     data = html_to_png(html)
-    image = Image.open(data)
+    return png_pipeline(data)
+
+
+def png_pipeline(png_data):
+    image = Image.open(png_data)
     image = crop_384(image)
-    return threshold(image)
+    return convert_to_1bit(image)
