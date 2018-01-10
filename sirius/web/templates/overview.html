@@ -15,7 +15,13 @@
 		<ul>
 
 		{% for p in my_printers %}
-		<li>{{ p.name }} (owned by you)
+		<li>
+			{% if p.is_online %}
+				<span class="label label-success">Online</span>
+			{% else %}
+				<span class="label label-default">Offline</span>
+			{% endif %}
+			{{ p.name }} (owned by you)
 			<a class="btn btn-default btn-xs" href="{{
 							url_for('printer_overview.printer_overview',
 									printer_id=p.id) }}">Overview</a>
@@ -26,7 +32,13 @@
 		{% endfor %}
 		
 		{% for p in friends_printers %}
-		<li>{{ p.name }} (owned by @{{ p.owner.username }})
+		<li>
+			{% if p.is_online %}
+				<span class="label label-success">Online</span>
+			{% else %}
+				<span class="label label-default">Offline</span>
+			{% endif %}
+			{{ p.name }} (owned by @{{ p.owner.username }})
 			<a class="btn btn-default btn-xs" href="{{
 					 		url_for('printer_print.printer_print',
 								printer_id=p.id) }}">Send message</a>

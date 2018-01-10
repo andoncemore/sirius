@@ -74,6 +74,13 @@ def _get_next_command_id(local_data={}):
     return local_data['next_command_id']
 
 
+def device_is_online(device_address):
+    for bridge_state in bridge_by_address.values():
+        if device_address in bridge_state.connected_devices:
+            return True
+    return False
+
+
 def send_message(device_address, message):
     """Sends a single message to a connected device.
 

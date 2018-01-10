@@ -4,7 +4,6 @@ from sqlalchemy import desc
 from sirius.coding import bitshuffle
 from sirius.models.db import db
 
-
 class Bridge(db.Model):
     """Bridges are not really interesting for users other than that they
     are connected so we don't store ownership for them.
@@ -89,6 +88,11 @@ class Printer(db.Model):
         db.session.commit()
 
         return printer.used_claim_code
+
+    @property
+    def is_online(self):
+        from sirius.protocol import protocol_loop
+        return protocol_loop.device_is_online(self.device_address)
 
 
 class ClaimCode(db.Model):
