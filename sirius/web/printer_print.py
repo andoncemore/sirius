@@ -73,52 +73,17 @@ def printer_print(printer_id):
         form.face.data = "default"
 
     if form.validate_on_submit():
-        # TODO: move image encoding into a pthread.
-        # TODO: use templating to avoid injection attacks
-        pixels = image_encoding.default_pipeline(
-            templating.default_template(form.message.data, from_name=login.current_user.username))
-
-        hardware_message = None
-        if form.face.data == "noface":
-            hardware_message = messages.SetDeliveryAndPrintNoFace(
-                device_address=printer.device_address,
-                pixels=pixels,
+        try:
+            printer.print_html(
+                html=form.message.data, 
+                from_name='@'+login.current_user.username
             )
-        else:
-            hardware_message = messages.SetDeliveryAndPrint(
-                device_address=printer.device_address,
-                pixels=pixels,
-            )
-
-        # If a printer is "offline" then we won't find the printer
-        # connected and success will be false.
-        success, next_print_id = protocol_loop.send_message(
-            printer.device_address, hardware_message)
-
-        if success:
             flask.flash('Sent your message to the printer!')
-            stats.inc('printer.print.ok')
-        else:
-            flask.flash(("Could not send message because the "
-                         "printer {} is offline.").format(printer.name),
-                        'error')
-            stats.inc('printer.print.offline')
-
-        # Store the same message in the database.
-        png = io.BytesIO()
-        pixels.save(png, "PNG")
-        model_message = model_messages.Message(
-            print_id=next_print_id,
-            pixels=bytearray(png.getvalue()),
-            sender_id=login.current_user.id,
-            target_printer=printer,
-        )
-
-        # We know immediately if the printer wasn't online.
-        if not success:
-            model_message.failure_message = 'Printer offline'
-            model_message.response_timestamp = datetime.datetime.utcnow()
-        db.session.add(model_message)
+        except hardware.Printer.OfflineError:
+            flask.flash(
+                "Could not send message because the printer {} is offline.".format(printer.name),
+                'error'
+            )
 
         return flask.redirect(flask.url_for(
             'printer_overview.printer_overview',

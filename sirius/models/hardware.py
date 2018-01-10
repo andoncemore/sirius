@@ -1,4 +1,4 @@
-import datetime
+import datetime, io
 from sqlalchemy import desc
 
 from sirius.coding import bitshuffle
@@ -93,6 +93,64 @@ class Printer(db.Model):
     def is_online(self):
         from sirius.protocol import protocol_loop
         return protocol_loop.device_is_online(self.device_address)
+
+    class OfflineError(Exception):
+        pass
+
+    def print_html(self, html, from_name, face='default'):
+        from sirius.protocol import protocol_loop
+        from sirius.protocol import messages
+        from sirius.coding import image_encoding
+        from sirius.coding import templating
+        from sirius import stats
+        from sirius.models import messages as model_messages
+
+        pixels = image_encoding.default_pipeline(
+            templating.default_template(html, from_name=from_name)
+        )
+
+        hardware_message = None
+        if face == "noface":
+            hardware_message = messages.SetDeliveryAndPrintNoFace(
+                device_address=self.device_address,
+                pixels=pixels,
+            )
+        else:
+            hardware_message = messages.SetDeliveryAndPrint(
+                device_address=self.device_address,
+                pixels=pixels,
+            )
+
+        # If a printer is "offline" then we won't find the printer
+        # connected and success will be false.
+        success, next_print_id = protocol_loop.send_message(
+            self.device_address,
+            hardware_message
+        )
+
+        if success:
+            stats.inc('printer.print.ok')
+        else:
+            stats.inc('printer.print.offline')
+
+        # Store the same message in the database.
+        png = io.BytesIO()
+        pixels.save(png, "PNG")
+        model_message = model_messages.Message(
+            print_id=next_print_id,
+            pixels=bytearray(png.getvalue()),
+            sender_name=from_name,
+            target_printer=self,
+        )
+
+        # We know immediately if the printer wasn't online.
+        if not success:
+            model_message.failure_message = 'Printer offline'
+            model_message.response_timestamp = datetime.datetime.utcnow()
+        db.session.add(model_message)
+
+        if not success:
+            raise OfflineError()
 
 
 class ClaimCode(db.Model):

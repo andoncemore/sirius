@@ -21,8 +21,7 @@ class Message(db.Model):
 
     print_id = db.Column(db.Integer, unique=True)
 
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    sender = db.relationship('User', backref=db.backref('messages', lazy='dynamic'))
+    sender_name = db.Column(db.String)
 
     target_printer_id = db.Column(db.Integer, db.ForeignKey('printer.id'))
     target_printer = db.relationship('Printer', backref=db.backref('messages', lazy='dynamic'))

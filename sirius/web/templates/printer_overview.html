@@ -32,7 +32,7 @@
 			<img src="data:image/png;base64,{{ m.base64_pixels() }}" style="border: 1px solid #ccc; width: 100%;">
 			<div class="caption">
 			<p>
-			From @{{ m.sender.username }} at
+			From {{ m.sender_name }} at
 			{% if m.response_timestamp == None %}
 			<span class="bg-info">(still sending)</span>
 			{% else %}
