@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Print key | {{ printer.name }} | Little Printer{% endblock %}
+
+{% block page_content %}
+<div class="hidden-xs" style="height: 3em"></div>
+<div class="row">
+    <div class="col-md-8">
+        <h1>🔑 You got a Print Key!</h1>
+
+        <p>
+            You can use this Print Key to print to {{ printer.owner.username }}'s Little Printer.
+        </p>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Printer</td>
+                    <td>{{ printer.name }}</td>
+                </tr>
+                <tr>
+                    <td>Owned by</td>
+                    <td>{{ printer.owner.username }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        {% if printer.is_online %}
+                            <span class="label label-success">Online</span>
+                        {% else %}
+                            <span class="label label-default">Offline</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Print key</td>
+                    <td><a href="{{request.url}}"><tt>{{print_key.secret}}</tt></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="hidden-xs" style="height: 2em"></div>
+
+<h2>How do I actually use this?!</h2>
+
+<h3>The easy way</h3>
+
+<p>
+    <a href="#">Download our iOS app</a> and paste the code (<tt>{{print_key.secret}}</tt>) in there. You'll be rattling selfies off in no time!
+</p>
+
+<h3>The nerdy way</h3>
+
+<p>
+    This URL also works as an API. You can POST data to it and it'll send it to the printer.
+</p>
+<p>
+    You could do this from IFTTT, a Glitch app, your web app, or the command line. For example:
+</p>
+<pre><code>curl '{{request.url}}?from=example' \
+    -H 'content-type: text/plain' \
+    -d 'boop beep boop'</code></pre>
+
+<h4>HTML</h4>
+<p>
+    <code>Content-Type: text/html</code>
+</p>
+<p>Renders and prints HTML. Surprisingly powerful! Supports HTML elements, CSS styling, and embedded images.</p>
+<pre><code>curl '{{request.url}}?from=htmlexample' \
+    -H 'content-type: text/html' \
+    -d "&lt;h1&gt;Yep, you can do this&lt;/h1&gt;&lt;small&gt;or this&lt;/small&gt;"</code></pre>
+    
+<p>
+    Take care to set the Content-Type of the request. Supported types below:
+</p>
+
+<h4>Images</h4>
+<p>
+    <code>Content-Type: image/png</code>, 
+    <code>Content-Type: image/gif</code>, 
+    <code>Content-Type: image/jpeg</code>
+</p>
+<p>Prints out the image data from the request body, in a lovely dithered style.</p>
+<pre><code>cat mindblown.gif | curl {{request.url}}?from=image-example \
+    -X POST \
+    -H 'content-type: image/gif' \
+    --data-binary @-</code></pre>
+
+<h4>Text</h4>
+<p>
+    <code>Content-Type: text/plain</code>
+</p>
+<p>Prints out plain text.</p>
+<pre><code>curl '{{request.url}}?from=text-example' \
+    -H 'content-type: text/plain' \
+    -d "I'm a little teapot"</code></pre>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+</script>
+{% endblock scripts %}

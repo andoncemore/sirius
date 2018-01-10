@@ -29,6 +29,7 @@ from sirius.web import admin
 from sirius.web import printer_print
 from sirius.web import printer_overview
 from sirius.web import external_api
+from sirius.web import print_key_api
 
 
 logger = logging.getLogger(__name__)
@@ -56,6 +57,7 @@ def create_app(config_name):
     app.register_blueprint(printer_print.blueprint)
     app.register_blueprint(external_api.blueprint)
     app.register_blueprint(admin.blueprint)
+    app.register_blueprint(print_key_api.blueprint)
 
     # Live interactions.
     gevent.spawn(protocol_loop.mark_dead_loop)
