@@ -76,7 +76,7 @@ def printer_print(printer_id):
         # TODO: move image encoding into a pthread.
         # TODO: use templating to avoid injection attacks
         pixels = image_encoding.default_pipeline(
-            templating.default_template(form.message.data))
+            templating.default_template(form.message.data, from_name=login.current_user.username))
 
         hardware_message = None
         if form.face.data == "noface":
@@ -139,7 +139,7 @@ def preview(user_id, username, printer_id):
 
     message = flask.request.data
     pixels = image_encoding.default_pipeline(
-        templating.default_template(message))
+        templating.default_template(message, from_name=login.current_user.username))
     png = io.BytesIO()
     pixels.save(png, "PNG")
 

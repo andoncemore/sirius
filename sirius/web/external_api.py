@@ -45,7 +45,11 @@ def print_html(printer_id):
         flask.abort(500)
 
     pixels = image_encoding.default_pipeline(
-      templating.default_template(task['message']))
+        templating.default_template(
+            task['message'],
+            from_name=login.current_user.username
+        )
+    )
 
     hardware_message = None
     if task['face'] == "noface":
