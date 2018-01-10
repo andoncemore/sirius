@@ -19,6 +19,14 @@
 		</h1>
 
 		<p>
+			{% if printer.is_online %}
+				<span class="label label-success">Online</span>
+			{% else %}
+				<span class="label label-default">Offline</span>
+			{% endif %}
+		</p>
+
+		<p>
 			<a class="btn btn-default" href="{{
 							url_for('printer_print.printer_print',
 									printer_id=printer.id) }}">Send message</a>
