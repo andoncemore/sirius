@@ -63,6 +63,12 @@
     -H 'content-type: text/plain' \
     -d 'boop beep boop'</code></pre>
 
+
+<div class="hidden-xs" style="height: 1em"></div>
+<p>
+    Take care to set the Content-Type of the request. Supported types below:
+</p>
+
 <h4>HTML</h4>
 <p>
     <code>Content-Type: text/html</code>
@@ -71,10 +77,6 @@
 <pre><code>curl '{{request.url}}?from=htmlexample' \
     -H 'content-type: text/html' \
     -d "&lt;h1&gt;Yep, you can do this&lt;/h1&gt;&lt;small&gt;or this&lt;/small&gt;"</code></pre>
-    
-<p>
-    Take care to set the Content-Type of the request. Supported types below:
-</p>
 
 <h4>Images</h4>
 <p>
@@ -83,7 +85,7 @@
     <code>Content-Type: image/jpeg</code>
 </p>
 <p>Prints out the image data from the request body, in a lovely dithered style.</p>
-<pre><code>cat mindblown.gif | curl {{request.url}}?from=image-example \
+<pre><code>cat mindblown.gif | curl '{{request.url}}?from=image-example' \
     -X POST \
     -H 'content-type: image/gif' \
     --data-binary @-</code></pre>
@@ -96,6 +98,21 @@
 <pre><code>curl '{{request.url}}?from=text-example' \
     -H 'content-type: text/plain' \
     -d "I'm a little teapot"</code></pre>
+
+<div class="hidden-xs" style="height: 1em"></div>
+
+<h4>Status API</h4>
+
+<p>This URL is also a status API e.g.</p>
+
+<pre><code>curl '{{request.url}}'</code></pre>
+
+<p>This returns the status of the printer in JSON format.</p>
+
+<p>e.g.</p>
+
+<pre><code>{{printer_info_json}}</code></pre>
+
 {% endblock %}
 
 {% block scripts %}

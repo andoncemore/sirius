@@ -39,7 +39,6 @@ def print_with_print_key(print_key_secret):
             "status": 'online' if printer.is_online else 'offline'
         }
 
-        print request.accept_mimetypes
         html_preference_score = request.accept_mimetypes.quality('text/html')
         json_preference_score = request.accept_mimetypes.quality('application/json')
 
@@ -47,7 +46,7 @@ def print_with_print_key(print_key_secret):
             return flask.render_template(
                 'print_key.html',
                 printer=printer,
-                printer_info=printer_info,
+                printer_info_json=json.dumps(printer_info, indent=2),
                 print_key=print_key,
             )
         else:
