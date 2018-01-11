@@ -2,7 +2,7 @@ import io
 import datetime
 import flask
 from flask.ext import login
-from flask import request
+from flask import request, jsonify
 import flask_wtf
 import wtforms
 import base64
@@ -54,21 +54,21 @@ def print_key(print_key_secret):
     else:
         from_name = request.args.get('from') or 'Key ' + print_key_secret[0:4]
 
-        
-
         if request.content_type == 'text/html':
             html = request.get_data(as_text=True)
         elif request.content_type.startswith('image/'):
-            data_uri = 'data:{type};base64,{data}'.format(
-                type=request.content_type,
-                data=base64.b64encode(request.data)
-            )
-            html = '<img src="{uri}" style="width: 100%">'
+            html = html_for_image_data(request.data)
         elif request.content_type.startswith('text/'):
             # fallback for sending any text format
-            html = '<div style="white-space: pre-wrap">{text}</div>'.format(
-                text=cgi.escape(request.get_data(as_text=True))
-            )
+            html = html_for_plain_text(request.get_data(as_text=True))
+        elif request.content_type == 'application/json':
+            json_object = request.get_json()
+            if 'html' in json_object:
+                html = json_object['html']
+            elif 'text' in json_object:
+                html = html_for_plain_text(json_object['text'])
+            else:
+                flask.abort(jsonify(message='json requests must have "html" or "text"'))
         else:
             flask.abort(415)
 
@@ -78,3 +78,15 @@ def print_key(print_key_secret):
             return json.dumps({'status': 'failed-offline'}), 503, {'content-type': 'application/json'}
 
         return json.dumps({'status': 'sent'}), 200, {'content-type': 'application/json'}
+
+def html_for_plain_text(text):
+    return '<div style="white-space: pre-wrap">{text}</div>'.format(
+        text=cgi.escape(text)
+    )
+
+def html_for_image_data(image_data):
+    data_uri = 'data:{type};base64,{data}'.format(
+        type=request.content_type,
+        data=base64.b64encode(image_data)
+    )
+    return '<img src="{uri}" style="width: 100%">'
