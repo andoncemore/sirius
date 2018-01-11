@@ -23,7 +23,7 @@ blueprint = flask.Blueprint('print_key_api', __name__)
 
 
 @blueprint.route('/printkey/<print_key_secret>', methods=['GET', 'POST'])
-def print_with_print_key(print_key_secret):
+def print_key(print_key_secret):
     print_key = PrintKey.query.filter(PrintKey.secret == print_key_secret).first()
     if print_key is None:
         flask.abort(404)

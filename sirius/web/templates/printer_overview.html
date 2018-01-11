@@ -32,7 +32,75 @@
 									printer_id=printer.id) }}">Send message</a>
 		</p>
 
+		<div class="spacer" style="height: 1em"></div>
+
 		{% if current_user.id == printer.owner.id %}
+		<h2>🔑 Print Keys</h2>
+
+		<p>
+			Print Keys let you print using the <a href="#">Little Printers</a> app, or using our
+			simple API.
+		</p>
+		
+		{% if printer.print_keys.count() > 0 %}
+		<table class="table print-keys-table">
+			<thead>
+				<tr>
+					<th>Key</th>
+					<th>Creation date</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for print_key in printer.print_keys %}
+				<tr>
+					<td>
+						<a href="{{ url_for('print_key_api.print_key',
+						                    print_key_secret=print_key.secret) }}">
+							{{ print_key.secret }}
+						</a>
+					</td>
+					<td>{{ print_key.created.strftime('%H:%M %d/%m/%Y') }}</td>
+					<td>
+						<button class="btn btn-link print-key-delete">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+						<form id="delete_form_{{ print_key.id }}"
+						      class="delete-form"
+						      method="POST"
+						      style="display: inline;
+						             visibility: hidden"
+						      action="{{ url_for('printer_overview.print_key_delete',
+						                         printer_id=printer.id,
+						                         print_key_id=print_key.id) }}">
+							Are you sure?
+							<button class="btn btn-link text-danger" 
+							        style="vertical-align: baseline;"
+							        type="submit">
+								Delete
+							</button>
+						</form>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<style>
+			.table.print-keys-table>tbody>tr>td {
+				vertical-align: middle;
+			}
+		</style>
+		{% endif %}
+
+		<form method="POST" action="{{ url_for('printer_overview.print_key_add',
+		                                       printer_id=printer.id) }}">
+			<button class="btn btn-default" type="submit">
+				<span class="glyphicon glyphicon-plus"></span> Cut a new Print Key
+			</button>
+		</form>
+
+		<div class="spacer" style="height: 1em"></div>
+
 		<h2>Recent messages</h2>
 
 		{% for m in messages %}
@@ -40,11 +108,10 @@
 			<img src="data:image/png;base64,{{ m.base64_pixels() }}" style="border: 1px solid #ccc; width: 100%;">
 			<div class="caption">
 			<p>
-			From {{ m.sender_name }} at
 			{% if m.response_timestamp == None %}
 			<span class="bg-info">(still sending)</span>
 			{% else %}
-			{{ m.response_timestamp.strftime('%H:%M, %d/%m/%Y') }}
+			Sent {{ m.response_timestamp.strftime('%H:%M, %d/%m/%Y') }}
 			{% endif %}
 			{% if m.failure_message %}
 			<br>
@@ -60,3 +127,13 @@
 	</div>
 </div>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script>
+	$(".print-key-delete").click(function () {
+		$(this).parent().find('.delete-form').css({visibility: 'visible'});
+	});
+</script>
+{% endblock scripts %}
