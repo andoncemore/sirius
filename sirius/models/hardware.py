@@ -150,7 +150,7 @@ class Printer(db.Model):
         db.session.add(model_message)
 
         if not success:
-            raise OfflineError()
+            raise Printer.OfflineError()
 
 
 class ClaimCode(db.Model):
