@@ -90,6 +90,20 @@
     -H 'content-type: image/gif' \
     --data-binary @-</code></pre>
 
+<h4>JSON</h4>
+<p>
+    <code>Content-Type: application/json</code>
+</p>
+<p>
+    Print Keys accept JSON encoded text or HTML. This is great for working with <a href="http://ifttt.com">IFTTT</a>!
+</p>
+<p>
+    Send HTML using the <tt>html</tt> key or plain text using the <tt>text</tt> key.
+</p>
+<pre><code>curl '{{request.url}}?from=jsonexample' \
+    -H 'content-type: application/json' \
+    -d '{"html":"&lt;h1&gt;header!&lt;/h1&gt;"}'</code></pre>
+
 <h4>Text</h4>
 <p>
     <code>Content-Type: text/plain</code>
