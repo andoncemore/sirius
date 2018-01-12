@@ -57,7 +57,7 @@ def print_key(print_key_secret):
         if request.content_type == 'text/html':
             html = request.get_data(as_text=True)
         elif request.content_type.startswith('image/'):
-            html = html_for_image_data(request.data)
+            html = html_for_image_data(request.get_data())
         elif request.content_type.startswith('text/'):
             # fallback for sending any text format
             html = html_for_plain_text(request.get_data(as_text=True))
@@ -89,4 +89,5 @@ def html_for_image_data(image_data):
         type=request.content_type,
         data=base64.b64encode(image_data)
     )
-    return '<img src="{uri}" style="width: 100%">'
+
+    return '<img src="{uri}" style="width: 100%">'.format(uri=data_uri)
