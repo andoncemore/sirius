@@ -54,14 +54,14 @@ def print_key(print_key_secret):
     else:
         from_name = request.args.get('from') or 'Key ' + print_key_secret[0:4]
 
-        if request.content_type == 'text/html':
+        if request.mimetype == 'text/html':
             html = request.get_data(as_text=True)
-        elif request.content_type.startswith('image/'):
+        elif request.mimetype.startswith('image/'):
             html = html_for_image_data(request.get_data())
-        elif request.content_type.startswith('text/'):
+        elif request.mimetype.startswith('text/'):
             # fallback for sending any text format
             html = html_for_plain_text(request.get_data(as_text=True))
-        elif request.content_type == 'application/json':
+        elif request.mimetype == 'application/json':
             json_object = request.get_json()
             if 'html' in json_object:
                 html = json_object['html']
