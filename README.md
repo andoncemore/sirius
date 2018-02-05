@@ -46,6 +46,11 @@ sudo mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
 
 ~/.local/bin/gunicorn -k flask_sockets.worker manage:app -b 0.0.0.0:5002 -w 1
 ```
+or use Docker Compose, just type:
+
+```
+docker-compose up
+```
 
 *With PhantomJS 1.9.8 I can't print pictures but version 2.1.1 seems to fix the problem*.
 
@@ -103,7 +108,7 @@ boolean little_print(String face, String message, String endpoint, String api_ke
     com.mashape.unirest.http.HttpResponse<String> request = Unirest.post(endpoint+"?api_key="+api_key)
       .body("{\"message\": \"" + message.replace("\"", "\\\"") +"\", \"face\": \"" + face.replace("\"", "\\\"") + "\"}")
       .asString();
-  
+
     println(request.getBody());
     return true;
   } catch (Exception e) {
