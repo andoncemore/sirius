@@ -143,6 +143,13 @@ def accept(ws):
             stats.inc('by_type.{}.count'.format(type(message).__name__))
             logger.debug("Received %r.", message)
 
+            # make sure the bridge_state is still in the bridge_by_address dict.
+            # (my theory is that the same bridge can lose a connection and make a
+            # second connection before this loop realises the first connection
+            # is gone. when the first one does finally error, it removes the
+            # second's entry instead of its own.)
+            bridge_by_address[power_on.bridge_address] = bridge_state
+
             _accept_step(message, bridge_state)
 
         # If the iterator closes normally then the client closed the
