@@ -8,14 +8,6 @@
 
 		<h1>
 			{{ printer.name }}
-			<small>
-				Owned by
-				{% if current_user.id == printer.owner.id %}
-				you
-				{% else %}
-				@{{ printer.owner.username }}
-				{% endif %}
-			</small>
 		</h1>
 
 		<p>
@@ -29,7 +21,7 @@
 		<p>
 			<a class="btn btn-default" href="{{
 							url_for('printer_print.printer_print',
-									printer_id=printer.id) }}">Send message</a>
+									printer_id=printer.id) }}">Send test message</a>
 		</p>
 
 		<div class="spacer" style="height: 1em"></div>

@@ -6,47 +6,27 @@
 <div class="row">
 	<div class="col-md-8">
 
-		<h1>Printers</h1>
+		<h1>My Printers</h1>
 		
-		{% if not my_printers and not friends_printers %}
+		{% if not my_printers %}
 		<p><em class="bg-warning">None available</em></p>
 		{% endif %}
 		
 		<ul>
-
-		{% for p in my_printers %}
-		<li>
-			{% if p.is_online %}
-				<span class="label label-success">Online</span>
-			{% else %}
-				<span class="label label-default">Offline</span>
-			{% endif %}
-			{{ p.name }} (owned by you)
-			<a class="btn btn-default btn-xs" href="{{
-							url_for('printer_overview.printer_overview',
-									printer_id=p.id) }}">Overview</a>
-			<a class="btn btn-default btn-xs" href="{{
-							url_for('printer_print.printer_print',
-									printer_id=p.id) }}">Send message</a>
-		</li>
-		{% endfor %}
-		
-		{% for p in friends_printers %}
-		<li>
-			{% if p.is_online %}
-				<span class="label label-success">Online</span>
-			{% else %}
-				<span class="label label-default">Offline</span>
-			{% endif %}
-			{{ p.name }} (owned by @{{ p.owner.username }})
-			<a class="btn btn-default btn-xs" href="{{
-					 		url_for('printer_print.printer_print',
-								printer_id=p.id) }}">Send message</a>
-		</li>
-		{% endfor %}
-
+			{% for p in my_printers %}
+			<li>
+				{% if p.is_online %}
+					<span class="label label-success">Online</span>
+				{% else %}
+					<span class="label label-default">Offline</span>
+				{% endif %}
+				<a class="btn btn-link" href="{{
+								url_for('printer_overview.printer_overview',
+										printer_id=p.id) }}">{{ p.name }}</a>
+			</li>
+			{% endfor %}
 		</ul>
-		
+
 		<p>
 		<a class="btn btn-default" href="{{ url_for('landing.claim',
 										user_id=current_user.id,
@@ -55,43 +35,6 @@
 		</a>
 		</p>
 		
-		<h1>Messaging permissions</h1>
-		
-		<p>Anybody you follow on Twitter can send a message to any of your printers. These are the {{ friends|length }} account(s) you follow who also have accounts here:</p>
-		
-		{% if signed_up_friends %}
-			<ul>
-			{% for f in signed_up_friends %}
-			<li>@{{ f.username }}</li>
-			{% endfor %}
-			</ul>
-		{% else %}
-			<p><em class="bg-warning">No-one yet</em></p>
-		{% endif %}
-		
-		<form method="POST" action="{{ url_for('landing.twitter_friend_refresh',
-										user_id=current_user.id,
-										username=current_user.username) }}">
-		{{ form.csrf_token }}
-		<p>
-		{% if seconds_to_next_refresh > 0 %}
-		<button class="btn btn-default" disabled="disabled">Please wait {{ "%d"|format(seconds_to_next_refresh // 60) }} minutes to refresh</button>
-		{% else %}
-		<button class="btn btn-default" type="submit">Refresh messaging permissions</button>
-		{% endif %}
-		</p>
-		<p>
-		(The list of people you follow on Twitter was last refreshed on {{ last_friend_refresh }}.)
-		</p>
-  </form>
-
-  <h1> Other </h1>
-  <p>Your API key : <em style="font-family: monospace" class="bg-warning">{{ current_user.api_key }}</em></p>
-  <form method="POST" action="{{ url_for('landing.generate_api_key',
-                  user_id=current_user.id,
-                  username=current_user.username) }}">
-		<button class="btn btn-default" type="submit">Regenerate</button>
-  </form>
 	</div>
 </div>
 {% endblock %}
