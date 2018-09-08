@@ -1,22 +1,10 @@
-# Sirius - An alternative website for your Little Printer
+# nord-sirius - An alternative backend for your Little Printer
 
 ![CloudBerg Little Printer](https://i.vimeocdn.com/video/222115839_1280x720.jpg)
 
 This repository is a fork of [genmon/sirius](https://github.com/genmon/sirius).
-The main project doesn't seem to be maintained anymore.
 
-Differences with the original project :
-
- * Update requirements.txt to fix some bugs
- * Improve documentation
-   * Add links from the community
-   * Add a guide for Debian
- * You can choose wether or not you want to print faces between messages
- * Add an API Key to make requests progamatically
-
-## Using it
-
-*More documentation will be added soon*
+Want to try it out? We have an instance running at http://littleprinter.nordprojects.co which all are welcome to use!
 
 ### Interesting links
 
