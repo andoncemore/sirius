@@ -40,6 +40,8 @@
 				<tr>
 					<th>Key</th>
 					<th>Creation date</th>
+					<th>Uses</th>
+					<th>Senders</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -53,6 +55,8 @@
 						</a>
 					</td>
 					<td>{{ print_key.created.strftime('%H:%M %d/%m/%Y') }}</td>
+					<td>{{ print_key.number_of_uses }}</td>
+					<td>{{ print_key.senders_formatted() }}</td>
 					<td>
 						<button class="btn btn-link print-key-delete">
 							<span class="glyphicon glyphicon-remove"></span>

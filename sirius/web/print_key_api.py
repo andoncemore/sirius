@@ -52,7 +52,11 @@ def print_key(print_key_secret):
         else:
             return json.dumps(printer_info), 200, {'content-type': 'application/json'}
     else:
-        from_name = request.args.get('from') or 'Key ' + print_key_secret[0:4]
+        from_name = request.args.get('from')
+
+        print_key.record_usage(from_name)
+    	db.session.add(print_key)
+    	db.session.commit()
 
         if request.mimetype == 'text/html':
             html = request.get_data(as_text=True)
@@ -73,10 +77,10 @@ def print_key(print_key_secret):
             flask.abort(415)
 
         try:
-            printer.print_html(html, from_name=from_name)
+            printer.print_html(html, from_name=from_name or 'Key ' + print_key_secret[0:4])
         except hardware.Printer.OfflineError:
             return json.dumps({'status': 'failed-offline'}), 503, {'content-type': 'application/json'}
-
+        
         return json.dumps({'status': 'sent'}), 200, {'content-type': 'application/json'}
 
 def html_for_plain_text(text):
