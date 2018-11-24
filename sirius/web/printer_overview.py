@@ -1,6 +1,7 @@
-import flask
+import flask, io
 from flask.ext import login
 from sqlalchemy import desc
+from PIL import Image
 
 from sirius.models import hardware
 from sirius.models import messages
@@ -30,6 +31,27 @@ def printer_overview(printer_id):
 		printer=printer,
 		messages=message_list[:10],
 	)
+
+@login.login_required
+@blueprint.route('/printer/<int:printer_id>/message/<int:message_id>/reprint', methods=['POST'])
+def reprint(printer_id, message_id):
+	printer = hardware.Printer.query.get(printer_id)
+	if printer is None:
+		flask.abort(404)
+	
+	if printer.owner.id != login.current_user.id:
+		flask.abort(403)
+
+	message = printer.messages.filter(messages.Message.id==message_id).first()
+
+	if message is None:
+		flask.abort(404)
+
+	pixels = Image.open(io.BytesIO(message.pixels))
+
+	printer.print_pixels(pixels, from_name=message.sender_name)
+
+	return flask.redirect(flask.url_for('.printer_overview', printer_id=printer.id))
 
 @login.login_required
 @blueprint.route('/printer/<int:printer_id>/printkey/<int:print_key_id>/delete', methods=['POST'])

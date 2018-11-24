@@ -107,6 +107,7 @@ def html_to_png(html):
     </body></html>
     """
     from selenium import webdriver
+    driver = None
     try:
         caps = {'acceptSslCerts': True}
         driver = webdriver.PhantomJS(

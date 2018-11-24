@@ -98,16 +98,20 @@ class Printer(db.Model):
         pass
 
     def print_html(self, html, from_name, face='default'):
-        from sirius.protocol import protocol_loop
-        from sirius.protocol import messages
         from sirius.coding import image_encoding
         from sirius.coding import templating
-        from sirius import stats
-        from sirius.models import messages as model_messages
 
         pixels = image_encoding.default_pipeline(
             templating.default_template(html, from_name=from_name)
         )
+
+        self.print_pixels(pixels, from_name=from_name, face=face)
+
+    def print_pixels(self, pixels, from_name, face='default'):
+        from sirius.protocol import messages
+        from sirius.protocol import protocol_loop
+        from sirius import stats
+        from sirius.models import messages as model_messages
 
         hardware_message = None
         if face == "noface":

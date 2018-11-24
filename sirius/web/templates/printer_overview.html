@@ -103,17 +103,24 @@
 		<div class="thumbnail" style="width: 300px;">
 			<img src="data:image/png;base64,{{ m.base64_pixels() }}" style="border: 1px solid #ccc; width: 100%;">
 			<div class="caption">
-			<p>
-			{% if m.response_timestamp == None %}
-			<span class="bg-info">(still sending)</span>
-			{% else %}
-			Sent {{ m.response_timestamp.strftime('%H:%M, %d/%m/%Y') }}
-			{% endif %}
-			{% if m.failure_message %}
-			<br>
-			Message failed: <span class="bg-danger">{{ m.failure_message }}</span>
-			{% endif %}
-			</p>
+				<p>
+					{% if m.response_timestamp == None %}
+					<span class="bg-info">(still sending)</span>
+					{% else %}
+					Sent {{ m.response_timestamp.strftime('%H:%M, %d/%m/%Y') }}
+					{% endif %}
+					{% if m.failure_message %}
+					<br>
+					Message failed: <span class="bg-danger">{{ m.failure_message }}</span>
+					{% endif %}
+					<form method="POST" action="{{ url_for('printer_overview.reprint',
+		                                                   printer_id=printer.id,
+														   message_id=m.id) }}">
+						<button class="btn btn-link" type="submit" style="padding: 0;">
+							<span class="glyphicon glyphicon-repeat"></span> Reprint
+						</button>
+					</form>
+				</p>
 			</div>
 		</div>
 		{% endfor %}

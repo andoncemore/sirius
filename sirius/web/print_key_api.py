@@ -79,7 +79,7 @@ def print_key(print_key_secret):
         try:
             printer.print_html(html, from_name=from_name or 'Key ' + print_key_secret[0:4])
         except hardware.Printer.OfflineError:
-            return json.dumps({'status': 'failed-offline'}), 503, {'content-type': 'application/json'}
+            return json.dumps({'status': 'failed-offline'}), 504, {'content-type': 'application/json'}
         
         return json.dumps({'status': 'sent'}), 200, {'content-type': 'application/json'}
 
