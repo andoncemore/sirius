@@ -10,6 +10,7 @@ import gevent
 import logging
 import flask
 import flask_sockets
+from flask_cors import CORS
 from flask.ext import bootstrap
 
 from sirius.protocol import protocol_loop
@@ -41,6 +42,9 @@ def create_app(config_name):
     app = flask.Flask(__name__)
     app.config.from_object(config.config[config_name])
     config.config[config_name].init_app(app)
+
+    # Allow all endpoints to be browser accessible
+    CORS(app)
 
     # Configure various plugins and logging
     bootstrap.init_app(app)
