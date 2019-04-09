@@ -1,137 +1,346 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{url_for('static', filename='device-key-favicon.png')}}">
 
-{% block title %}Print key | {{ printer.name }} | Little Printer{% endblock %}
+        <title>Device Key – {{printer.owner.username}}'s Little Printer</title>
 
-{% block page_content %}
-<div class="hidden-xs" style="height: 3em"></div>
-<div class="row">
-    <div class="col-md-8">
-        <h1>🔑 You got a Print Key!</h1>
+        <style>
+            @import url(https://nordprojects.co/fonts/apercu-mono-regular-web/stylesheet.css);
 
-        <p>
-            You can use this Print Key to print to {{ printer.owner.username }}'s Little Printer.
-        </p>
+            /* GLOBAL */
+            @font-face {
+              font-family: 'Apercu';
+              src: url('https://nordprojects.co/fonts/Apercu-Medium.eot');
+              src: url('https://nordprojects.co/fonts/Apercu-Medium.eot?#iefix') format('embedded-opentype'),
+                url('https://nordprojects.co/fonts/Apercu-Medium.woff') format('woff'),
+                url('https://nordprojects.co/fonts/Apercu-Medium.ttf') format('truetype');
+              font-weight: 500;
+              font-style: normal;
+            }
 
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Printer</td>
-                    <td>{{ printer.name }}</td>
-                </tr>
-                <tr>
-                    <td>Owned by</td>
-                    <td>{{ printer.owner.username }}</td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td>
-                        {% if printer.is_online %}
-                            <span class="label label-success">Online</span>
-                        {% else %}
-                            <span class="label label-default">Offline</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Print key</td>
-                    <td><a href="{{request.url}}"><tt>{{print_key.secret}}</tt></a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+            * {
+                box-sizing: border-box;
+            }
 
-<div class="hidden-xs" style="height: 2em"></div>
+            html, body {
+                padding: 0;
+                margin: 0;
+                overflow-x: hidden;
+            }
 
-<h2>How do I actually use this?!</h2>
+            body {
+              /* font is Apercu, as loaded by font-face, or fallback to system font */
+              font-family: 'Apercu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+              font-weight: 500;
+              font-size: 16px;
+              color: #373737;
+              background: #fbfbfb;
+              letter-spacing: -0.1px;
+              line-height: 28px;
+              -webkit-font-smoothing: antialiased;
+            }
+            a, a:link {
+                color: #1500FF;
+                text-decoration: underline;
+            }
 
-<h3>The easy way</h3>
+            header {
+                background: white;
+                color: #1500FF;
+                height: 100px;
+                display: flex;
+                align-items: center;
+                padding: 20px 30px;
+                margin-bottom: 30px;
+                font-size: 1.2em;
+            }
+            @media (min-width: 768px) {
+                header {
+                    padding: 20px 50px;
+                    font-size: 1.5em;
+                }
+            }
+            header .icon {
+                margin-right: 10px;
+            }
+            header .title {
+                letter-spacing: 1px;
+                line-height: 38px;
+            }
+            header .byline {
+                font-family: 'Apercu Mono', monospace;
+                letter-spacing: 0.33px;
+                justify-self: flex-end;
+                font-size: 0.70em;
+            }
 
-<p>
-    <a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8">Download our iOS app</a> and paste the code (<tt>{{print_key.secret}}</tt>) in there.
-</p>
+            .margins {
+                padding: 0 30px;
+            }
+            @media (min-width: 768px) {
+                .margins {
+                    padding: 0 50px;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+            }
 
-<h3>The nerdy way</h3>
+            .device-key-symbol {
+                margin-bottom: 16px
+            }
+            .central-column {
+                max-width: 450px;
+                text-align: center;
+                margin: 0 auto;
+                padding-top: 20px;
+            }
+            .what-is-this {
+                font-family: "Apercu Mono", monospace;
+                font-size: 15px;
+                color: #49528D;
+                letter-spacing: 0.63px;
+                line-height: 28px;
+                margin-top: 40px;
 
-<p>
-    This URL also works as an API. You can POST data to it and it'll send it to the printer.
-</p>
-<p>
-    You could do this from IFTTT, a Glitch app, your web app, or the command line. For example:
-</p>
-<pre><code>curl '{{request.url}}?from=example' \
+                text-align: left;
+            }
+            @media (min-width: 1000px) {
+                /* there's enough gap to fit this alongside */
+                .what-is-this {
+                    position: absolute;
+                    left: 50px;
+                    top: 100px;
+                    max-width: 333px;
+                }
+                .central-column {
+                    padding-top: 40px;
+                }
+            }
+            .device-key-label {
+                font-family: Apercu-Medium;
+                font-size: 22px;
+                color: #49528D;
+                letter-spacing: 0.91px;
+                line-height: 38px;
+            }
+            .device-key {
+
+                font-family: "Apercu Mono", monospace;
+                font-size: 20px;
+                display: inline-block;
+                max-width: 100%;
+                text-align: left;
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+            .attr-list {
+                display: grid;
+                grid-template-columns: 105px auto;
+                text-align: left;
+                line-height: 38px;
+                color: #49528D;
+                padding: 0;
+                margin-top: 30px;
+            }
+            .attr-list dt {
+                font-size: 17px;
+                color: #49528D;
+                letter-spacing: 0.67px;
+            }
+            .attr-list dd {
+                font-family: "Apercu Mono", monospace;
+                font-size: 16px;
+                letter-spacing: 0.63px;
+                margin: 0;
+            }
+            .status.online {
+                color: #37b06e
+            }
+            .status.offline {
+                color: #a24a66;
+            }
+        </style>
+
+    </head>
+    <body>
+        <header>
+            <img class="icon" src="{{url_for('static', filename='device-key-mini.svg')}}">
+            <div class="title">Device Keys</div>
+            <div class="spacer" style="flex: 1"></div>
+            <div class="byline">by <a href="https://nordprojects.co/">Nord Projects</a></div>
+        </header>
+
+        <div class="margins">
+
+            <div class="central-column">
+                <img class="device-key-symbol" src="{{url_for('static', filename='device-key-large.svg')}}">
+
+                <div class="device-key-label">Device Key:</div>
+                <a class="device-key" href="{{request.url}}">{{request.url}}</a>
+
+                <p class="what-is-this">
+                    A Device Key is a secret URL for a device, containing both
+                    address and authentication. It can be
+                    shared like any other URL, and used by apps,
+                    services, or your own programs as an API endpoint.
+                </p>
+
+                <dl class="attr-list">
+                    <dt>Type:</dt> <dd>Berg Little Printer</dd>
+                    <dt>Class:</dt> <dd>Thermal Printer</dd>
+                    <dt>Name:</dt> <dd>{{ printer.name }}</dd>
+                    <dt>Owner:</dt> <dd>{{ printer.owner.username }}</dd>
+                    <dt>Status:</dt>
+                        <dd>
+                            {% if printer.is_online %}
+                                <span class="status online">Online</span>
+                            {% else %}
+                                <span class="status offline">Offline</span>
+                            {% endif %}
+                        </dd>
+                    <dt>Apps:</dt> <dd><a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8">Little Printers</a></dd>
+                    <dt>API:</dt> <dd><a href="#api">Documentation</a></dd>
+                </dl>
+            </div>
+
+            <style>
+                .api-docs {
+                    display: none;
+                    font-family: Arial, Helvetica, sans-serif;
+                }
+                .api-docs:target {
+                    display: block;
+                }
+                @media (min-width: 768px) {
+                    .api-docs {
+                        background: white;
+                        max-width: 800px;
+                        margin: 60px auto;
+                        padding: 20px;
+                        box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05);
+                    }
+                }
+                .api-docs h1, .api-docs h2, .api-docs h3, .api-docs h4 {
+                    font-weight: 500;
+                    font-family: 'Apercu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                    margin-top: 0;
+                    margin-bottom: 0.5em;
+                }
+                .api-docs p {
+                    margin: 0 0 10px;
+                }
+                .api-docs code {
+                    padding: 2px 4px;
+                    font-size: 90%;
+                    color: #c7254e;
+                    background-color: #f9f2f4;
+                    border-radius: 4px;
+                }
+                .api-docs pre {
+                    display: block;
+                    padding: 9.5px;
+                    margin: 0 0 10px;
+                    font-size: 13px;
+                    line-height: 1.42857143;
+                    color: #333;
+                    word-break: break-all;
+                    word-wrap: break-word;
+                    background-color: #f5f5f5;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+                .api-docs pre code {
+                    padding: 0;
+                    font-size: inherit;
+                    color: inherit;
+                    white-space: pre-wrap;
+                    background-color: transparent;
+                    border-radius: 0;
+                }
+            </style>
+            <div id="api" class="api-docs">
+                <a href="#" style="display: block; text-align: right">Close</a>
+                <h2>API Documentation</h2>
+                <h3>Class: Thermal Printer</h3>
+                <p>
+                    This URL also works as an API. You can POST data to it and it'll send it to the printer.
+                </p>
+                <p>
+                    You could do this from IFTTT, a Glitch app, your web app, or the command line. For example:
+                </p>
+                <pre><code>curl '{{request.url}}?from=example' \
     -H 'content-type: text/plain' \
     -d 'boop beep boop'</code></pre>
 
 
-<div class="hidden-xs" style="height: 1em"></div>
-<p>
-    Take care to set the Content-Type of the request. Supported types below:
-</p>
+                <div class="hidden-xs" style="height: 1em"></div>
+                <p>
+                    Take care to set the Content-Type of the request. Supported types below:
+                </p>
 
-<h4>HTML</h4>
-<p>
-    <code>Content-Type: text/html</code>
-</p>
-<p>Renders and prints HTML. Surprisingly powerful! Supports HTML elements, CSS styling, and embedded images.</p>
-<pre><code>curl '{{request.url}}?from=htmlexample' \
+                <h4>HTML</h4>
+                <p>
+                    <code>Content-Type: text/html</code>
+                </p>
+                <p>Renders and prints HTML. Surprisingly powerful! Supports HTML elements, CSS styling, and embedded images.</p>
+                <pre><code>curl '{{request.url}}?from=htmlexample' \
     -H 'content-type: text/html' \
     -d "&lt;h1&gt;Yep, you can do this&lt;/h1&gt;&lt;small&gt;or this&lt;/small&gt;"</code></pre>
 
-<h4>Images</h4>
-<p>
-    <code>Content-Type: image/png</code>, 
-    <code>Content-Type: image/gif</code>, 
-    <code>Content-Type: image/jpeg</code>
-</p>
-<p>Prints out the image data from the request body, in a lovely dithered style.</p>
-<pre><code>cat mindblown.gif | curl '{{request.url}}?from=image-example' \
+                <h4>Images</h4>
+                <p>
+                    <code>Content-Type: image/png</code>, 
+                    <code>Content-Type: image/gif</code>, 
+                    <code>Content-Type: image/jpeg</code>
+                </p>
+                <p>Prints out the image data from the request body, in a lovely dithered style.</p>
+                <pre><code>cat mindblown.gif | curl '{{request.url}}?from=image-example' \
     -X POST \
     -H 'content-type: image/gif' \
     --data-binary @-</code></pre>
 
-<h4>JSON</h4>
-<p>
-    <code>Content-Type: application/json</code>
-</p>
-<p>
-    Print Keys accept JSON encoded text or HTML. This is great for working with <a href="http://ifttt.com">IFTTT</a>!
-</p>
-<p>
-    Send HTML using the <tt>html</tt> key or plain text using the <tt>text</tt> key.
-</p>
-<pre><code>curl '{{request.url}}?from=jsonexample' \
+                <h4>JSON</h4>
+                <p>
+                    <code>Content-Type: application/json</code>
+                </p>
+                <p>
+                    Print Keys accept JSON encoded text or HTML. This is great for working with <a href="http://ifttt.com">IFTTT</a>!
+                </p>
+                <p>
+                    Send HTML using the <tt>html</tt> key or plain text using the <tt>text</tt> key.
+                </p>
+                <pre><code>curl '{{request.url}}?from=jsonexample' \
     -H 'content-type: application/json' \
     -d '{"html":"&lt;h1&gt;header!&lt;/h1&gt;"}'</code></pre>
 
-<h4>Text</h4>
-<p>
-    <code>Content-Type: text/plain</code>
-</p>
-<p>Prints out plain text.</p>
-<pre><code>curl '{{request.url}}?from=text-example' \
+                <h4>Text</h4>
+                <p>
+                    <code>Content-Type: text/plain</code>
+                </p>
+                <p>Prints out plain text.</p>
+                <pre><code>curl '{{request.url}}?from=text-example' \
     -H 'content-type: text/plain' \
     -d "I'm a little teapot"</code></pre>
 
-<div class="hidden-xs" style="height: 1em"></div>
+                <div class="hidden-xs" style="height: 1em"></div>
 
-<h4>Status API</h4>
+                <h4>Status API</h4>
 
-<p>This URL is also a status API e.g.</p>
+                <p>This URL is also a status API e.g.</p>
 
-<pre><code>curl '{{request.url}}'</code></pre>
+                <pre><code>curl '{{request.url}}'</code></pre>
 
-<p>This returns the status of the printer in JSON format.</p>
+                <p>This returns the status of the printer in JSON format.</p>
 
-<p>e.g.</p>
+                <p>e.g.</p>
 
-<pre><code>{{printer_info_json}}</code></pre>
+                <pre><code>{{printer_info_json}}</code></pre>
 
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-
-<script>
-</script>
-{% endblock scripts %}
+            </div>
+        </div>
+    </body>
+</html>
