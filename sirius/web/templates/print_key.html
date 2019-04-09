@@ -141,10 +141,11 @@
                 display: grid;
                 grid-template-columns: 105px auto;
                 text-align: left;
-                line-height: 38px;
+                line-height: 23px;
                 color: #49528D;
                 padding: 0;
                 margin-top: 30px;
+                grid-row-gap: 15px;
             }
             .attr-list dt {
                 font-size: 17px;
@@ -195,14 +196,21 @@
                     <dt>Name:</dt> <dd>{{ printer.name }}</dd>
                     <dt>Owner:</dt> <dd>{{ printer.owner.username }}</dd>
                     <dt>Status:</dt>
-                        <dd>
-                            {% if printer.is_online %}
-                                <span class="status online">Online</span>
-                            {% else %}
-                                <span class="status offline">Offline</span>
-                            {% endif %}
-                        </dd>
-                    <dt>Apps:</dt> <dd><a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8">Little Printers</a></dd>
+                    <dd>
+                        {% if printer.is_online %}
+                            <span class="status online">Online</span>
+                        {% else %}
+                            <span class="status offline">Offline</span>
+                        {% endif %}
+                    </dd>
+                    <dt>Apps:</dt>
+                    <dd>
+                        Little Printers<br>
+                        <small>
+                            <a href="{{'co.nordprojects.littleprinter:///printers?add=' + request.url|urlencode}}">Open</a>
+                            | <a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8"> Download</a>
+                        </small>
+                    </dd>
                     <dt>API:</dt> <dd><a href="#api">Documentation</a></dd>
                 </dl>
             </div>
