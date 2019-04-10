@@ -1,4 +1,5 @@
-import datetime, random, string
+import datetime, random, string, os
+from flask import request
 from sirius.models.db import db
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm.attributes import flag_modified
@@ -36,3 +37,13 @@ class PrintKey(db.Model):
 
     def senders_formatted(self):
         return ', '.join((s or 'Anonymous') for s in self.senders)
+    
+    @property
+    def url(self):
+        if 'DEVICE_KEY_DOMAIN' in os.environ:
+            return 'https://%s/%s' % (os.environ['DEVICE_KEY_DOMAIN'], self.secret)
+        else:
+            # if a DEVICE_KEY_DOMAIN is not defined, we need a request object
+            # to get the full URL.
+            return '%sprintkey/%s' % (request.url_root, self.secret)
+        

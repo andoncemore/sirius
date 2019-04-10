@@ -49,9 +49,8 @@
 				{% for print_key in printer.print_keys %}
 				<tr>
 					<td>
-						<a href="{{ url_for('print_key_api.print_key',
-						                    print_key_secret=print_key.secret) }}">
-							{{ print_key.secret }}
+						<a href="{{ print_key.url }}">
+							{{ print_key.url }}
 						</a>
 					</td>
 					<td>{{ print_key.created.strftime('%H:%M %d/%m/%Y') }}</td>

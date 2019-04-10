@@ -181,7 +181,7 @@
                 <img class="device-key-symbol" src="{{url_for('static', filename='device-key-large.svg')}}">
 
                 <div class="device-key-label">Device Key:</div>
-                <a class="device-key" href="{{request.url}}">{{request.url}}</a>
+                <a class="device-key" href="{{print_key.url}}">{{print_key.url}}</a>
 
                 <p class="what-is-this">
                     A Device Key is a secret URL for a device, containing both
@@ -207,7 +207,7 @@
                     <dd>
                         Little Printers<br>
                         <small>
-                            <a href="{{'co.nordprojects.littleprinter:///printers?add=' + request.url|urlencode}}">Open</a>
+                            <a href="{{'co.nordprojects.littleprinter:///printers?add=' + print_key.url|urlencode}}">Open</a>
                             | <a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8"> Download</a>
                         </small>
                     </dd>
@@ -280,7 +280,7 @@
                 <p>
                     You could do this from IFTTT, a Glitch app, your web app, or the command line. For example:
                 </p>
-                <pre><code>curl '{{request.url}}?from=example' \
+                <pre><code>curl '{{print_key.url}}?from=example' \
     -H 'content-type: text/plain' \
     -d 'boop beep boop'</code></pre>
 
@@ -295,7 +295,7 @@
                     <code>Content-Type: text/html</code>
                 </p>
                 <p>Renders and prints HTML. Surprisingly powerful! Supports HTML elements, CSS styling, and embedded images.</p>
-                <pre><code>curl '{{request.url}}?from=htmlexample' \
+                <pre><code>curl '{{print_key.url}}?from=htmlexample' \
     -H 'content-type: text/html' \
     -d "&lt;h1&gt;Yep, you can do this&lt;/h1&gt;&lt;small&gt;or this&lt;/small&gt;"</code></pre>
 
@@ -306,7 +306,7 @@
                     <code>Content-Type: image/jpeg</code>
                 </p>
                 <p>Prints out the image data from the request body, in a lovely dithered style.</p>
-                <pre><code>cat mindblown.gif | curl '{{request.url}}?from=image-example' \
+                <pre><code>cat mindblown.gif | curl '{{print_key.url}}?from=image-example' \
     -X POST \
     -H 'content-type: image/gif' \
     --data-binary @-</code></pre>
@@ -321,7 +321,7 @@
                 <p>
                     Send HTML using the <tt>html</tt> key or plain text using the <tt>text</tt> key.
                 </p>
-                <pre><code>curl '{{request.url}}?from=jsonexample' \
+                <pre><code>curl '{{print_key.url}}?from=jsonexample' \
     -H 'content-type: application/json' \
     -d '{"html":"&lt;h1&gt;header!&lt;/h1&gt;"}'</code></pre>
 
@@ -330,7 +330,7 @@
                     <code>Content-Type: text/plain</code>
                 </p>
                 <p>Prints out plain text.</p>
-                <pre><code>curl '{{request.url}}?from=text-example' \
+                <pre><code>curl '{{print_key.url}}?from=text-example' \
     -H 'content-type: text/plain' \
     -d "I'm a little teapot"</code></pre>
 
@@ -340,7 +340,7 @@
 
                 <p>This URL is also a status API e.g.</p>
 
-                <pre><code>curl '{{request.url}}'</code></pre>
+                <pre><code>curl '{{print_key.url}}'</code></pre>
 
                 <p>This returns the status of the printer in JSON format.</p>
 
