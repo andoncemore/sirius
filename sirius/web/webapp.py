@@ -43,8 +43,8 @@ def create_app(config_name):
     app.config.from_object(config.config[config_name])
     config.config[config_name].init_app(app)
 
-    # Allow all endpoints to be browser accessible
-    CORS(app)
+    # Allow the printkey API to be browser accessible
+    CORS(app, resources={r"/printkey/*": {"origins": "*"}})
 
     # Configure various plugins and logging
     bootstrap.init_app(app)
