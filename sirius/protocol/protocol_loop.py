@@ -19,6 +19,7 @@ from sirius import stats
 from sirius.models import user
 from sirius.models import hardware
 from sirius.models import messages as model_messages
+from sirius.models.db import db
 
 logger = logging.getLogger(__name__)
 
@@ -151,6 +152,10 @@ def accept(ws):
             bridge_by_address[power_on.bridge_address] = bridge_state
 
             _accept_step(message, bridge_state)
+
+            # don't keep an idle session running inside this loop,
+            # otherwise it uses a DB connection for every connected bridge
+            db.session.remove()
 
         # If the iterator closes normally then the client closed the
         # socket and we clean up normally.
