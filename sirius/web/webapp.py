@@ -10,6 +10,7 @@ import gevent
 import logging
 import flask
 import flask_sockets
+import os
 from flask_cors import CORS
 from flask.ext import bootstrap
 
@@ -52,6 +53,13 @@ def create_app(config_name):
     sockets.init_app(app)
     login.manager.init_app(app)
     logging.basicConfig(level=logging.DEBUG if app.debug else logging.INFO)
+
+    if 'SCOUT_MONITOR' in os.environ:
+            # configure Scout, a monitoring tool
+            from scout_apm.flask import ScoutApm
+            ScoutApm(app)
+            from scout_apm.flask.sqlalchemy import instrument_sqlalchemy
+            instrument_sqlalchemy(db.db.engine)
 
     # Register blueprints
     app.register_blueprint(stats.blueprint)
