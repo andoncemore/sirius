@@ -168,6 +168,7 @@ def accept(ws):
 
     finally:
         logger.debug("Bridge disonnected: %r.", bridge_state)
+        db.session.remove()
         del bridge_by_address[power_on.bridge_address]
 
 
