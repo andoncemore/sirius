@@ -1,4 +1,4 @@
-FROM debian:9.3-slim
+FROM debian:10-slim
 
 WORKDIR /sirius
 
@@ -21,7 +21,5 @@ RUN pip install honcho
 EXPOSE 5000
 
 ADD . .
-
-RUN ./manage.py db upgrade
 
 ENTRYPOINT honcho start

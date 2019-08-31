@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  sirius:
+    depends_on:
+      - sirius-database
+    command: ["/wait-for-it.sh", "db:5342", "--", "./manage.py db upgrade"]
+
+  sirius-database:
+    image: postgres
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "32770:5432"
+    environment:
+      - POSTGRES_PASSWORD=plop
