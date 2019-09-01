@@ -27,7 +27,7 @@ class PrintForm(flask_wtf.Form):
     )
     face = wtforms.SelectField(
         'Face',
-        coerce=unicode,
+        coerce=str,
         validators=[wtforms.validators.DataRequired()],
     )
     message = wtforms.TextAreaField(

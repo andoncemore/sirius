@@ -55,8 +55,8 @@ def print_key(print_key_secret):
         from_name = request.args.get('from')
 
         print_key.record_usage(from_name)
-    	db.session.add(print_key)
-    	db.session.commit()
+        db.session.add(print_key)
+        db.session.commit()
 
         if request.mimetype == 'text/html':
             html = request.get_data(as_text=True)

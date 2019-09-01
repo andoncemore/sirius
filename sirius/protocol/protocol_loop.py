@@ -6,7 +6,7 @@ The official API is two functions:
 accept(websocket)
 send_message(device_address, message)
 """
-import messages
+from . import messages
 import json
 import logging
 import time
