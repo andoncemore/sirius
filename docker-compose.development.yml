@@ -6,7 +6,13 @@ services:
       - 5000:5000
     depends_on:
       - sirius-database
-    command: ["/bin/wait-for-it.sh", "db:5342", "--", "./manage.py db upgrade"]
+    command:
+      [
+        "bin/wait-for-it.sh",
+        "sirius-database:5432",
+        "--",
+        "bin/docker-entrypoint.sh",
+      ]
     environment:
       - VIRTUAL_HOST=sirius.localhost
 
@@ -17,6 +23,7 @@ services:
     ports:
       - "32770:5432"
     environment:
+      - POSTGRES_DB=sirius-dev
       - POSTGRES_PASSWORD=plop
 
   sirius-web:

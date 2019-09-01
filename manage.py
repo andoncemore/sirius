@@ -1,11 +1,16 @@
 #!/usr/bin/env python2.7
 
 import os, sys
+import re
 
 if os.path.exists('.env'):
     print('Importing environment from .env...')
+    regex = re.compile(r"#.*$") # strip comments
     for line in open('.env'):
-        name, value = line.strip().split('=', 1)
+        kv = regex.sub("", line).strip()
+        if '=' not in kv:
+            continue
+        name, value = kv.split('=', 1)
         os.environ[name] = value
 
 from sirius.web import webapp

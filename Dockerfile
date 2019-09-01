@@ -21,5 +21,3 @@ RUN pip install honcho
 EXPOSE 5000
 
 ADD . .
-
-ENTRYPOINT honcho start
