@@ -8,6 +8,8 @@ services:
     env_file:
       - .env
     command: "./manage.py db upgrade"
+    environment:
+      - OPENSSL_CONF=/etc/ssl/
 
   sirius-web:
     image: jwilder/nginx-proxy
