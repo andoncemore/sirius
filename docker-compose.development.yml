@@ -4,22 +4,11 @@ services:
   sirius:
     ports:
       - 5000:5000
-    depends_on:
-      - sirius-database
-    command:
-      [
-        "bin/wait-for-it.sh",
-        "sirius-database:5432",
-        "--",
-        "bin/docker-entrypoint.sh",
-      ]
     environment:
       - VIRTUAL_HOST=sirius.localhost
+      - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-dev
 
   sirius-database:
-    image: postgres
-    healthcheck:
-      test: "exit 0"
     ports:
       - "32770:5432"
     environment:

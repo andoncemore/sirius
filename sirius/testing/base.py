@@ -18,6 +18,7 @@ class Base(testing.TestCase):
     def setUp(self):
         testing.TestCase.setUp(self)
         db.create_all()
+        db.session.begin_nested()
         self.testuser = user.User(
             username="testuser",
             twitter_oauth=user.TwitterOAuth(
@@ -28,9 +29,9 @@ class Base(testing.TestCase):
             )
         )
         db.session.add(self.testuser)
-        db.session.commit()
 
     def tearDown(self):
+        db.session.rollback()
         db.session.remove()
         db.drop_all()
 

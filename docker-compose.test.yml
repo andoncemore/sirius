@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  sirius:
+    depends_on:
+      - sirius-database-test
+    environment:
+      - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-test
+
+  sirius-database-test:
+    container_name: sirius-database-test
+    image: postgres
+    healthcheck:
+      test: "exit 0"
+    environment:
+      - POSTGRES_DB=sirius-test
+      - POSTGRES_PASSWORD=plop

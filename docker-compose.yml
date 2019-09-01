@@ -5,9 +5,15 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    env_file:
-      - .env
-    command: "./manage.py db upgrade"
+    depends_on:
+      - sirius-web
+    command:
+      [
+        "bin/wait-for-it.sh",
+        "sirius-database:5432",
+        "--",
+        "bin/docker-entrypoint.sh",
+      ]
     environment:
       - OPENSSL_CONF=/etc/ssl/
 
@@ -19,5 +25,3 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs
-    depends_on:
-      - sirius
