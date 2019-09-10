@@ -11,7 +11,7 @@ from sirius.web import twitter
 blueprint = flask.Blueprint('landing', __name__)
 
 
-class ClaimForm(flask_wtf.Form):
+class ClaimForm(flask_wtf.FlaskForm):
     claim_code = wtforms.StringField(
         'Claim code',
         validators=[wtforms.validators.DataRequired()],
@@ -30,7 +30,7 @@ class ClaimForm(flask_wtf.Form):
             )
 
 
-class TwitterRefreshFriendsForm(flask_wtf.Form):
+class TwitterRefreshFriendsForm(flask_wtf.FlaskForm):
     "CSRF-only form."
 
 @blueprint.route('/about')

@@ -19,7 +19,7 @@ from sirius import stats
 blueprint = flask.Blueprint('printer_print', __name__)
 
 
-class PrintForm(flask_wtf.Form):
+class PrintForm(flask_wtf.FlaskForm):
     target_printer = wtforms.SelectField(
         'Printer',
         coerce=int,
