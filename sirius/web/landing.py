@@ -1,7 +1,7 @@
 import flask
 import flask_wtf
 import wtforms
-from flask.ext import login
+import flask_login as login
 import datetime
 
 from sirius.coding import claiming

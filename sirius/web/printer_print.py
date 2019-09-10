@@ -1,7 +1,7 @@
 import io
 import datetime
 import flask
-from flask.ext import login
+import flask_login as login
 import flask_wtf
 import wtforms
 import base64

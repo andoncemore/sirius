@@ -1,5 +1,5 @@
-from flask.ext import testing
-from flask.ext import login
+import flask_testing as testing
+import flask_login as login
 
 from sirius.models import user
 from sirius.models.db import db

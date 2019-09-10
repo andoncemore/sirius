@@ -1,7 +1,7 @@
 import io
 from PIL import Image
 import flask
-from flask.ext import login
+import flask_login as login
 
 from sirius.protocol import protocol_loop
 from sirius.protocol import messages

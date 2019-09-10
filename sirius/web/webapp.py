@@ -7,7 +7,7 @@ import logging
 import flask
 import flask_sockets
 from flask_cors import CORS
-from flask.ext import bootstrap
+import flask_bootstrap as bootstrap
 
 from sirius.protocol import protocol_loop
 from sirius import stats

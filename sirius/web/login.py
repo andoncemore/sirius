@@ -1,4 +1,4 @@
-from flask.ext import login
+import flask_login as login
 
 from sirius.models import user
 

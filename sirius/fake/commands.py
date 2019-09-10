@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import sys
 
-from flask.ext import script
+import flask_script as script
 from sirius.models import hardware
 from sirius.models import user as user_model
 from sirius.models.db import db

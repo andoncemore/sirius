@@ -4,8 +4,8 @@ import os
 import datetime
 import flask
 from gevent import pool
-from flask.ext import oauth
-from flask.ext import login
+import flask_oauth as oauth
+import flask_login as login
 
 import twitter as twitter_api
 
