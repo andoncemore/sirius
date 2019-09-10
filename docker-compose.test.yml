@@ -4,6 +4,8 @@ services:
   sirius:
     depends_on:
       - sirius-database-test
+    ports:
+      - 5000:5000
     command: "bin/wait-for-it.sh sirius-database-test:5432 -- bin/docker-entrypoint.sh"
     environment:
       - DATABASE_URL=postgresql://postgres:plop@sirius-database-test/sirius-test

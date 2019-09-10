@@ -39,7 +39,7 @@ def about():
 
 @blueprint.route('/')
 def landing():
-    if not login.current_user.is_authenticated():
+    if not login.current_user.is_authenticated:
         return flask.render_template('landing.html')
 
     return overview()
