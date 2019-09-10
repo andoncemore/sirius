@@ -31,7 +31,7 @@ class PipeTestCase(unittest.TestCase):
 
         image = Image.open(data)
         image = image_encoding.crop_384(image)
-        image = image_encoding.threshold(image)
+        # image = image_encoding.threshold(image)
 
         n_bytes, _ = image_encoding.rle_from_bw(image)
         self.assertEquals(n_bytes, 3072)

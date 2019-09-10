@@ -48,11 +48,11 @@ class TestFriends(base.Base):
         f0, _ = self.u0.signed_up_friends()
         f1, _ = self.u1.signed_up_friends()
 
-        self.assertItemsEqual(f0, [
+        self.assertCountEqual(f0, [
             user.Friend('twitter1', 't1', ''),
             user.Friend('twitter2', 't2', '')])
 
-        self.assertItemsEqual(f1, [
+        self.assertCountEqual(f1, [
             user.Friend('twitter2', 't2', '')])
 
 

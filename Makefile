@@ -3,4 +3,4 @@ run-development:
 
 run-test:
 	docker rm -v sirius-database-test || true
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml up
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml up --build

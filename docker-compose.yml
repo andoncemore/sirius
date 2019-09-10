@@ -7,13 +7,7 @@ services:
       dockerfile: ./Dockerfile
     depends_on:
       - sirius-web
-    command:
-      [
-        "bin/wait-for-it.sh",
-        "sirius-database:5432",
-        "--",
-        "bin/docker-entrypoint.sh",
-      ]
+    command: "bin/wait-for-it.sh sirius-database:5432 -- bin/docker-entrypoint.sh"
     environment:
       - OPENSSL_CONF=/etc/ssl/
 

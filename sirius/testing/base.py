@@ -29,6 +29,8 @@ class Base(testing.TestCase):
             )
         )
         db.session.add(self.testuser)
+        db.session.flush()
+        db.session.refresh(self.testuser)
 
     def tearDown(self):
         db.session.rollback()

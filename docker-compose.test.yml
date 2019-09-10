@@ -4,8 +4,9 @@ services:
   sirius:
     depends_on:
       - sirius-database-test
+    command: "bin/wait-for-it.sh sirius-database-test:5432 -- bin/docker-entrypoint.sh"
     environment:
-      - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-test
+      - DATABASE_URL=postgresql://postgres:plop@sirius-database-test/sirius-test
 
   sirius-database-test:
     container_name: sirius-database-test
@@ -15,3 +16,8 @@ services:
     environment:
       - POSTGRES_DB=sirius-test
       - POSTGRES_PASSWORD=plop
+
+  sirius-web:
+    ports:
+      - "8880:80"
+      - "8443:443"

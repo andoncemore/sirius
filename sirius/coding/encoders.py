@@ -96,7 +96,9 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
                 'name': 'add_device_encryption_key',
                 'params': {
                     'device_address': command.device_address,
-                    'encryption_key': claiming.key_from_claim_code(command.claim_code),
+                    'encryption_key': base64.b64encode(
+                        claiming.key_from_claim_code(command.claim_code)
+                    ).decode('utf-8'),
                 },
             },
         })
@@ -104,7 +106,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
     elif type(command) == messages.SetDeliveryAndPrint:
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x1, _payload_from_pixels(command.pixels), command_id)),
+                0x1, _payload_from_pixels(command.pixels), command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -112,7 +114,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
     elif type(command) == messages.SetDelivery:
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x2, _payload_from_pixels(command.pixels), command_id)),
+                0x2, _payload_from_pixels(command.pixels), command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -120,7 +122,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
     elif type(command) == messages.SetDeliveryAndPrintNoFace:
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x11, _payload_from_pixels(command.pixels), command_id)),
+                0x11, _payload_from_pixels(command.pixels), command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -128,7 +130,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
     elif type(command) == messages.SetDeliveryNoFace:
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x12, _payload_from_pixels(command.pixels), command_id)),
+                0x12, _payload_from_pixels(command.pixels), command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -142,7 +144,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
 
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x0102, payload, command_id)),
+                0x0102, payload, command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -157,7 +159,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
 
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x0101, payload, command_id)),
+                0x0101, payload, command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
@@ -170,7 +172,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
 
         return make({
             'binary_payload': base64.b64encode(_encode_printer_message(
-                0x202, payload, command_id)),
+                0x202, payload, command_id)).decode('utf-8'),
             'device_address': command.device_address,
             'type': 'DeviceCommand',
         })
