@@ -52,7 +52,7 @@ def create_app(config_name):
     # Register blueprints
     app.register_blueprint(stats.blueprint)
     app.register_blueprint(landing.blueprint)
-    app.register_blueprint(twitter.blueprint)
+    app.register_blueprint(twitter.blueprint, url_prefix="/login")
     app.register_blueprint(printer_overview.blueprint)
     app.register_blueprint(printer_print.blueprint)
     app.register_blueprint(external_api.blueprint)

@@ -7,6 +7,7 @@ services:
     environment:
       - VIRTUAL_HOST=sirius.localhost
       - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-dev
+      - OAUTHLIB_INSECURE_TRANSPORT=1
 
   sirius-database:
     ports:
