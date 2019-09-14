@@ -102,7 +102,7 @@ def preview(user_id, username, printer_id):
     assert user_id == login.current_user.id
     assert username == login.current_user.username
 
-    message = flask.request.data
+    message = flask.request.data.decode('utf-8')
     pixels = image_encoding.default_pipeline(
         templating.default_template(message, from_name=login.current_user.username))
     png = io.BytesIO()
