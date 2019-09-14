@@ -123,7 +123,7 @@ def accept(ws):
     :param ws: A gevent websocket object.
     """
     loop = _decoder_loop(ws)
-    power_on = loop.next()
+    power_on = next(loop)
 
     # stats & logging
     stats.inc('accepted.count')
