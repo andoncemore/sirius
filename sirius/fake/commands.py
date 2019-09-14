@@ -22,9 +22,9 @@ fake_manager = script.Manager(sub_opts, usage="Fake printer interactions.")
 
 @fake_manager.command
 def printer():
-    device_address = os.urandom(8).encode('hex')
+    device_address = os.urandom(8).hex()
     xor = bitshuffle.hardware_xor_from_device_address(device_address)
-    secret = os.urandom(5).encode('hex')
+    secret = os.urandom(5).hex()
 
     cc = claiming.encode(xor, int(secret, 16))
     printer = hardware.Printer(
