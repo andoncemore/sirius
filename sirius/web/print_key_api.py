@@ -91,7 +91,7 @@ def html_for_plain_text(text):
 def html_for_image_data(image_data):
     data_uri = 'data:{type};base64,{data}'.format(
         type=request.content_type,
-        data=base64.b64encode(image_data)
+        data=base64.b64encode(image_data).decode('utf-8')
     )
 
     return '<img src="{uri}" style="width: 100%">'.format(uri=data_uri)

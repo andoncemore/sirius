@@ -100,7 +100,7 @@
 
 		{% for m in messages %}
 		<div class="thumbnail" style="width: 300px;">
-			<img src="data:image/png;base64,{{ m.base64_pixels().decode('ascii') }}" style="border: 1px solid #ccc; width: 100%;">
+			<img src="data:image/png;base64,{{ m.base64_pixels().decode('utf-8') }}" style="border: 1px solid #ccc; width: 100%;">
 			<div class="caption">
 				<p>
 					{% if m.response_timestamp == None %}

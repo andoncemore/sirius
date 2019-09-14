@@ -110,4 +110,4 @@ def preview(user_id, username, printer_id):
 
     stats.inc('printer.preview')
 
-    return '<img style="width: 100%;" src="data:image/png;base64,{}">'.format(base64.b64encode(png.getvalue()))
+    return '<img style="width: 100%;" src="data:image/png;base64,{}">'.format(base64.b64encode(png.getvalue()).decode('utf-8'))
