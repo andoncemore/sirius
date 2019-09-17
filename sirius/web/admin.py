@@ -24,7 +24,7 @@ def randomly_change_personality():
     # system.
     assert flask.current_app.config['DEBUG'], "Debug not enabled"
 
-    im = image_encoding.threshold(Image.open('./tests/normalface.png'))
+    im = image_encoding.convert_to_1bit(Image.open('./tests/normalface.png'))
 
     msg = messages.SetPersonality(
         device_address='000d6f000273ce0b',
