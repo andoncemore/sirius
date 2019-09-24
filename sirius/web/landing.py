@@ -1,7 +1,7 @@
 import flask
 import flask_wtf
 import wtforms
-from flask.ext import login
+import flask_login as login
 import datetime
 
 from sirius.coding import claiming
@@ -11,7 +11,7 @@ from sirius.web import twitter
 blueprint = flask.Blueprint('landing', __name__)
 
 
-class ClaimForm(flask_wtf.Form):
+class ClaimForm(flask_wtf.FlaskForm):
     claim_code = wtforms.StringField(
         'Claim code',
         validators=[wtforms.validators.DataRequired()],
@@ -30,7 +30,7 @@ class ClaimForm(flask_wtf.Form):
             )
 
 
-class TwitterRefreshFriendsForm(flask_wtf.Form):
+class TwitterRefreshFriendsForm(flask_wtf.FlaskForm):
     "CSRF-only form."
 
 @blueprint.route('/about')
@@ -39,7 +39,7 @@ def about():
 
 @blueprint.route('/')
 def landing():
-    if not login.current_user.is_authenticated():
+    if not login.current_user.is_authenticated:
         return flask.render_template('landing.html')
 
     return overview()

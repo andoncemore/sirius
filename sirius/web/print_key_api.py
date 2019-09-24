@@ -1,7 +1,7 @@
 import io
 import datetime
 import flask
-from flask.ext import login
+import flask_login as login
 from flask import request, jsonify
 import flask_wtf
 import wtforms
@@ -55,8 +55,8 @@ def print_key(print_key_secret):
         from_name = request.args.get('from')
 
         print_key.record_usage(from_name)
-    	db.session.add(print_key)
-    	db.session.commit()
+        db.session.add(print_key)
+        db.session.commit()
 
         if request.mimetype == 'text/html':
             html = request.get_data(as_text=True)
@@ -91,7 +91,7 @@ def html_for_plain_text(text):
 def html_for_image_data(image_data):
     data_uri = 'data:{type};base64,{data}'.format(
         type=request.content_type,
-        data=base64.b64encode(image_data)
+        data=base64.b64encode(image_data).decode('utf-8')
     )
 
     return '<img src="{uri}" style="width: 100%">'.format(uri=data_uri)

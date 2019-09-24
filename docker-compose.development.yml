@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  sirius:
+    ports:
+      - 5000:5000
+    environment:
+      - VIRTUAL_HOST=sirius.localhost
+      - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-dev
+      - OAUTHLIB_INSECURE_TRANSPORT=1
+
+  sirius-database:
+    ports:
+      - "32770:5432"
+    environment:
+      - POSTGRES_DB=sirius-dev
+      - POSTGRES_PASSWORD=plop
+
+  sirius-web:
+    ports:
+      - "8880:80"
+      - "8443:443"

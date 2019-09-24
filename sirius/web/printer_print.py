@@ -1,7 +1,7 @@
 import io
 import datetime
 import flask
-from flask.ext import login
+import flask_login as login
 import flask_wtf
 import wtforms
 import base64
@@ -19,7 +19,7 @@ from sirius import stats
 blueprint = flask.Blueprint('printer_print', __name__)
 
 
-class PrintForm(flask_wtf.Form):
+class PrintForm(flask_wtf.FlaskForm):
     target_printer = wtforms.SelectField(
         'Printer',
         coerce=int,
@@ -27,7 +27,7 @@ class PrintForm(flask_wtf.Form):
     )
     face = wtforms.SelectField(
         'Face',
-        coerce=unicode,
+        coerce=str,
         validators=[wtforms.validators.DataRequired()],
     )
     message = wtforms.TextAreaField(
@@ -102,7 +102,7 @@ def preview(user_id, username, printer_id):
     assert user_id == login.current_user.id
     assert username == login.current_user.username
 
-    message = flask.request.data
+    message = flask.request.data.decode('utf-8')
     pixels = image_encoding.default_pipeline(
         templating.default_template(message, from_name=login.current_user.username))
     png = io.BytesIO()
@@ -110,4 +110,4 @@ def preview(user_id, username, printer_id):
 
     stats.inc('printer.preview')
 
-    return '<img style="width: 100%;" src="data:image/png;base64,{}">'.format(base64.b64encode(png.getvalue()))
+    return '<img style="width: 100%;" src="data:image/png;base64,{}">'.format(base64.b64encode(png.getvalue()).decode('utf-8'))

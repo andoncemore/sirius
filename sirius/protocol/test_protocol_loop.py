@@ -4,7 +4,7 @@ Run like:
 
 $ bin/nosetests sirius/
 """
-from flask.ext import testing
+import flask_testing as testing
 
 # TODO: It's a bit ugly that the protocol loop depends on the flask setup
 # for database access but it's the easiest solution for now.

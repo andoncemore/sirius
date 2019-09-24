@@ -31,14 +31,16 @@ class User(db.Model):
         return 'User {}'.format(self.username)
 
     # Flask-login interface:
+    @property
     def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
         return True
 
     def get_id(self):
         return self.id
-
-    def is_authenticated(self):
-        return True
 
     def generate_api_key(self):
         self.api_key = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(32))

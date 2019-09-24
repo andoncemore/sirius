@@ -1,4 +1,4 @@
-# nord-sirius 
+# nord-sirius
 
 ![CloudBerg Little Printer](https://i.vimeocdn.com/video/222115839_1280x720.jpg)
 
@@ -11,12 +11,13 @@ Want to try it out? We have an instance running at http://littleprinter.nordproj
 Want to get your Little Printer online?
 
 - Hack the Berg Cloud bridge. Follow our [step-by-step guide](https://docs.google.com/document/d/1JT1f2ClVdAnjrnby92V9ONBnN05EFQGYpLG5ijl5KRI/edit?usp=sharing) here.
-    - If you've already got a hacked bridge using the alpha.littleprinter.com
-      backend, use the guide above but start at step 6.
+
+  - If you've already got a hacked bridge using the alpha.littleprinter.com
+    backend, use the guide above but start at step 6.
 
 - Once it's paired with this server, you can use Device Keys with our iOS app,
-[Little Printers](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8),
-which is also [open source](https://github.com/nordprojects/littleprinters-ios-app)!
+  [Little Printers](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8),
+  which is also [open source](https://github.com/nordprojects/littleprinters-ios-app)!
 
 ### Using the device key API
 
@@ -30,11 +31,25 @@ interface, and go to that URL to view API documentation.
 We run an instance of this server on Heroku, at [littleprinter.nordprojects.co](https://littleprinter.nordprojects.co). You are welcome to use our instance!
 
 If you want to run it yourself, this app will run on Heroku, but you need a
-static IP address due to the way the Berg Bridge connects. We have a droplet 
+static IP address due to the way the Berg Bridge connects. We have a droplet
 at Digital Ocean running nginx to forward the HTTPS connection on to Heroku.
 
 It should also be possible to run in Docker, dokku, or directly with gunicorn,
 but we don't use it that way :).
+
+## Running locally via Docker
+
+There's a development Docker setup that adds Postgres for you, by running:
+
+```sh
+docker-compose -f docker-compose.yml -f docker-compose.development.yml up
+```
+
+Or if you have your own database, you can configure the `DEV_DATABASE_URL` environment variable in `.env`, and then simply run:
+
+```
+docker-compose up
+```
 
 ### Environment variables
 
@@ -47,7 +62,7 @@ FLASK_CONFIG=...
 DATABASE_URL=...
 ```
 
-These can be set in the `.env` file in your checkout.
+These can be set in the `.env` file, and an example is available in `.env.sample` in your checkout.
 
 ### Creating fake printers and friends
 
@@ -105,7 +120,6 @@ flask_sockets gunicorn worker) which runs
 `sirius.protocol.protocol_loop.accept` immediately. `accept` registers
 the websocket/bridge_address mapping in a global dictionary; it then
 loops forever, decoding messages as they come in.
-
 
 ### Claim codes
 

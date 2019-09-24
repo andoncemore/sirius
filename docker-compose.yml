@@ -1,11 +1,21 @@
-version: '2'
+version: "3"
 
 services:
   sirius:
     build:
       context: ./
       dockerfile: ./Dockerfile
+    depends_on:
+      - sirius-web
+    command: "bin/wait-for-it.sh sirius-database:5432 -- bin/docker-entrypoint.sh"
+    environment:
+      - OPENSSL_CONF=/etc/ssl/
+
+  sirius-web:
+    image: jwilder/nginx-proxy
     ports:
-      - 5000:5000
-    env_file:
-     - .env
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs

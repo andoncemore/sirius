@@ -14,7 +14,7 @@ import time
 import struct
 import base64
 
-from flask.ext import script
+import flask_script as script
 
 from sirius.emulate import protocol_fragments as pf
 

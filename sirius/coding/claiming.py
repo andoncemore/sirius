@@ -100,30 +100,30 @@ def generate_link_key(input):
 
         # Pad with the original length encoded as a 16bit int
         # Python3
-        #input = input + bytes( [((input_length * 8) >> 8 & 0xff)] )
-        #input = input + bytes( [((input_length * 8) >> 0 & 0xff)] )
+        input = input + bytes( [((input_length * 8) >> 8 & 0xff)] )
+        input = input + bytes( [((input_length * 8) >> 0 & 0xff)] )
         # Python2
-        input = input + chr((input_length * 8) >> 8 & 0xff)
-        input = input + chr((input_length * 8) >> 0 & 0xff)
+        # input = input + chr((input_length * 8) >> 8 & 0xff)
+        # input = input + chr((input_length * 8) >> 0 & 0xff)
 
     elif input_length != ZBEE_SEC_CONST_BLOCKSIZE:
         raise InvalidClaimCode("cannot handle input size %d" % input_length)
 
     # We encrypt the salt and the input bytes
-    # blocks = [bytes(CLAIM_CODE_SALT), input] # Python3
-    blocks = [str(bytearray(CLAIM_CODE_SALT)), input] # Python2
+    blocks = [bytes(CLAIM_CODE_SALT), input] # Python3
+    # blocks = [str(bytearray(CLAIM_CODE_SALT)), input] # Python2
 
-    #output = bytes(16) # Works in Python3
-    output = bytearray(16) # Works in Python2
+    output = bytes(16) # Works in Python3
+    # output = bytearray(16) # Works in Python2
 
     for block in blocks:
-        # aes_encoder = AES.new(output, AES.MODE_ECB) # Python3
-        aes_encoder = AES.new(str(output), AES.MODE_ECB) # Python2
+        aes_encoder = AES.new(output, AES.MODE_ECB) # Python3
+        # aes_encoder = AES.new(str(output), AES.MODE_ECB) # Python2
         h = aes_encoder.encrypt(block)
         output = bytearray(16)
         for i in range(len(output)):
-            # output[i] = h[i] ^ block[i] # Python3
-            output[i] = ord(h[i]) ^ ord(block[i]) # Python2
+            output[i] = h[i] ^ block[i] # Python3
+            # output[i] = ord(h[i]) ^ ord(block[i]) # Python2
         output = bytes(output)
 
     return output
@@ -142,8 +142,8 @@ def process_claim_code(claim_code):
 
     # Generate our own CRC from the raw_value, and confirm it matches the extracted crc
     data_for_crc = struct.pack("<Q", raw_value & 0xffffffffffffffff)
-    #server_crc = crc16(data_for_crc) # this works in Python3
-    server_crc = crc16( bytearray(data_for_crc) ) # this works in Python2
+    server_crc = crc16(data_for_crc) # this works in Python3
+    # server_crc = crc16( bytearray(data_for_crc) ) # this works in Python2
 
     if server_crc != crc:
         raise InvalidClaimCode("CRC problem")

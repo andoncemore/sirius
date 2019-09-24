@@ -118,7 +118,7 @@ def html_to_png(html):
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
         with tempfile.NamedTemporaryFile(suffix='.html') as f:
-            if isinstance(html, unicode):
+            if isinstance(html, str):
                 f.write(html.encode('utf8'))
             else:
                 f.write(html)

@@ -6,7 +6,7 @@ The official API is two functions:
 accept(websocket)
 send_message(device_address, message)
 """
-import messages
+from . import messages
 import json
 import logging
 import time
@@ -123,7 +123,7 @@ def accept(ws):
     :param ws: A gevent websocket object.
     """
     loop = _decoder_loop(ws)
-    power_on = loop.next()
+    power_on = next(loop)
 
     # stats & logging
     stats.inc('accepted.count')

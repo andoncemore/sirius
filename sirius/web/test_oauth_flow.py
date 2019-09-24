@@ -1,5 +1,5 @@
-from flask.ext import testing
-from flask.ext import login
+import flask_testing as testing
+import flask_login as login
 
 from sirius.models.db import db
 from sirius.web import webapp
@@ -25,7 +25,7 @@ class TestOAuthFlow(testing.TestCase):
         return app
 
     def test_oauth_authorized(self):
-        self.assertEqual(login.current_user.is_authenticated(), False)
+        self.assertEqual(login.current_user.is_authenticated, False)
         twitter.process_authorization(
             'token',
             'secret_token',
@@ -33,4 +33,4 @@ class TestOAuthFlow(testing.TestCase):
             '/next_url',
         )
         self.assertEqual(login.current_user.username, 'test_screen_name')
-        self.assertEqual(login.current_user.is_authenticated(), True)
+        self.assertEqual(login.current_user.is_authenticated, True)

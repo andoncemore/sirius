@@ -2,16 +2,12 @@
 
 $ bin/gunicorn -k flask_sockets.worker sirius.server:app -b 0.0.0.0:5002 -w 1
 """
-# Temporary hack until gevent fixes
-# https://github.com/gevent/gevent/issues/477.
-import _gevent_polyfill
-
 import gevent
 import logging
 import flask
 import flask_sockets
 from flask_cors import CORS
-from flask.ext import bootstrap
+import flask_bootstrap as bootstrap
 
 from sirius.protocol import protocol_loop
 from sirius import stats
@@ -56,7 +52,7 @@ def create_app(config_name):
     # Register blueprints
     app.register_blueprint(stats.blueprint)
     app.register_blueprint(landing.blueprint)
-    app.register_blueprint(twitter.blueprint)
+    app.register_blueprint(twitter.blueprint, url_prefix="/login")
     app.register_blueprint(printer_overview.blueprint)
     app.register_blueprint(printer_print.blueprint)
     app.register_blueprint(external_api.blueprint)

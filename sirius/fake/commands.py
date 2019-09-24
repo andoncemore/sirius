@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import sys
 
-from flask.ext import script
+import flask_script as script
 from sirius.models import hardware
 from sirius.models import user as user_model
 from sirius.models.db import db
@@ -22,9 +22,9 @@ fake_manager = script.Manager(sub_opts, usage="Fake printer interactions.")
 
 @fake_manager.command
 def printer():
-    device_address = os.urandom(8).encode('hex')
+    device_address = os.urandom(8).hex()
     xor = bitshuffle.hardware_xor_from_device_address(device_address)
-    secret = os.urandom(5).encode('hex')
+    secret = os.urandom(5).hex()
 
     cc = claiming.encode(xor, int(secret, 16))
     printer = hardware.Printer(

@@ -1,5 +1,5 @@
-from flask.ext import testing
-from flask.ext import login
+import flask_testing as testing
+import flask_login as login
 
 from sirius.models import user
 from sirius.models.db import db
@@ -18,6 +18,7 @@ class Base(testing.TestCase):
     def setUp(self):
         testing.TestCase.setUp(self)
         db.create_all()
+        db.session.begin_nested()
         self.testuser = user.User(
             username="testuser",
             twitter_oauth=user.TwitterOAuth(
@@ -28,9 +29,11 @@ class Base(testing.TestCase):
             )
         )
         db.session.add(self.testuser)
-        db.session.commit()
+        db.session.flush()
+        db.session.refresh(self.testuser)
 
     def tearDown(self):
+        db.session.rollback()
         db.session.remove()
         db.drop_all()
 

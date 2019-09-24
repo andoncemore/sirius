@@ -25,9 +25,9 @@
 				<li{% if request.url_rule.endpoint == "landing.landing" %} class="active"{% endif %}><a href="{{ url_for('landing.landing') }}">Home</a></li>
 				<li{% if request.url_rule.endpoint == "landing.about" %} class="active"{% endif %}><a href="{{ url_for('landing.about') }}">About</a></li>
 			</ul>
-			{% if current_user.is_authenticated() %}
+			{% if current_user.is_authenticated %}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="/twitter/logout">Sign out</a></li>
+				<li><a href="/login/twitter/logout">Sign out</a></li>
 			</ul>
 			{% endif %}
 		</div><!--/.nav-collapse -->

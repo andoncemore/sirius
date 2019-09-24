@@ -1,5 +1,5 @@
 import flask, io
-from flask.ext import login
+import flask_login as login
 from sqlalchemy import desc
 from PIL import Image
 
