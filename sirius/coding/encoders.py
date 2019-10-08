@@ -96,9 +96,7 @@ def encode_bridge_command(bridge_address, command, command_id, timestamp):
                 'name': 'add_device_encryption_key',
                 'params': {
                     'device_address': command.device_address,
-                    'encryption_key': base64.b64encode(
-                        claiming.key_from_claim_code(command.claim_code)
-                    ).decode('utf-8'),
+                    'encryption_key': claiming.key_from_claim_code(command.claim_code).decode('utf-8'),
                 },
             },
         })
