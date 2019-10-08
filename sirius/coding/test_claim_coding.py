@@ -15,7 +15,7 @@ class CodingCase(unittest.TestCase):
 
     def test_decoding(self):
         claim_code = '6xwh-441j-8115-zyrh'
-        expected_encryption_key = b'F7D9bmztHV32+WJScGZR0g==\n'
+        expected_encryption_key = b'F7D9bmztHV32+WJScGZR0g=='
         _, calculated_encryption_key = claiming.process_claim_code(claim_code)
 
         self.assertEqual(expected_encryption_key, calculated_encryption_key)

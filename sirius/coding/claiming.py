@@ -151,7 +151,7 @@ def process_claim_code(claim_code):
     # Pack the 40-bit number as a LE long long, and then truncate back to 5 bytes
     packed_secret = struct.pack("<Q", secret)[0:5]
     link_key = generate_link_key(packed_secret)
-    link_key_b64 = base64.encodestring(link_key)
+    link_key_b64 = base64.b64encode(link_key)
 
     return (hardware_xor, link_key_b64)
 
