@@ -6,7 +6,7 @@ from sirius.protocol import messages
 
 
 
-class CodingCase(unittest.TestCase):
+class EncodersCase(unittest.TestCase):
     def test_add_device_encryption_key(self):
         claim_code = '6xwh-441j-8115-zyrh'
         expected_encryption_key = 'F7D9bmztHV32+WJScGZR0g=='
