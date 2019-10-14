@@ -1,4 +1,5 @@
 import os
+import datetime
 from tempfile import TemporaryDirectory
 from PIL import Image
 
@@ -34,5 +35,14 @@ class ImageCodingSnapshotCase(snapshottest.TestCase):
             'hello_world': '<p>Hello, world!</p>',
         }
 
+        fixture_username = 'somebody'
+        fixture_date = datetime.datetime(2012, 2, 3, 15, 46, 12)
+
         for name, snippet in fixtures.items():
-            self._check_html(name, templating.default_template(snippet, 'anonymous'))
+            self._check_html(
+                name, templating.default_template(
+                    snippet,
+                    fixture_username,
+                    fixture_date
+                )
+            )
