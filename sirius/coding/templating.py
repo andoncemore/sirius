@@ -8,7 +8,10 @@ ENV = jinja2.Environment()
 # TODO apply scrubber library if wanted.
 # https://pypi.python.org/pypi/scrubber
 
-def default_template(raw_html, from_name, date=datetime.datetime.now()):
+def default_template(raw_html, from_name, date=None):
+    if date is None:
+        date = datetime.datetime.now()
+
     with open(DEFAULT_TEMPLATE_FILE) as f:
         template = f.read()
 
