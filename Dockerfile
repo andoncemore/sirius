@@ -20,7 +20,7 @@ RUN apt-get update -y && \
   phantomjs \
   wget \
   postgresql-11 \
-   git
+  git
 
 RUN apt-get autoremove -y
 
