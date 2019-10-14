@@ -36,5 +36,6 @@ requests==2.22.0
 requests-oauthlib==1.2.0
 selenium==3.141.0
 six==1.12.0
+git+git://github.com/syrusakbary/snapshottest.git@4ac2b4fb09e9e7728bebb11967c164a914775d1d#snapshottest
 twitter==1.18.0
 websocket-client==0.56.0

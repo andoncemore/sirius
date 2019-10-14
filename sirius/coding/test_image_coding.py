@@ -1,5 +1,9 @@
+import os
+from tempfile import TemporaryDirectory
 from PIL import Image, ImageDraw
 import unittest
+import snapshottest
+from snapshottest.file import FileSnapshot
 
 from sirius.coding import image_encoding
 
@@ -20,6 +24,21 @@ class ImageCase(unittest.TestCase):
         image = Image.open(data)
         self.assertEquals(image.size[0], 384)
         self.assertEquals(image.size[1], 100)
+
+class ImageSnapshotCase(snapshottest.TestCase):
+    def test_snapshot_fixtures(self):
+        fixtures = {
+            'hello_world': '<html><body>Hello, world!</body></html>',
+        }
+
+        for name, html in fixtures.items():
+            with TemporaryDirectory() as tmpdir:
+                data = image_encoding.html_to_png(html)
+                image = Image.open(data)
+
+                temp_file_name = os.path.join(tmpdir, '%s.png' % name)
+                image.save(temp_file_name, format='PNG')
+                self.assertMatchSnapshot(FileSnapshot(temp_file_name), name)
 
 
 class PipeTestCase(unittest.TestCase):
