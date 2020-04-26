@@ -153,8 +153,22 @@ class Printer(db.Model):
             model_message.response_timestamp = datetime.datetime.utcnow()
         db.session.add(model_message)
 
+        self.trim_old_messages()
+
         if not success:
             raise Printer.OfflineError()
+    
+    def trim_old_messages(self):
+        '''
+        Keep up to 100 messages per printer to stop them building up forever.
+
+        Should be called after a message is added.
+        '''
+        from sirius.models import messages as model_messages
+
+        old_messages = self.messages.order_by(desc('created')).offset(100).all()
+        for old_message in old_messages:
+            db.session.delete(old_message)
 
 
 class ClaimCode(db.Model):
