@@ -8,6 +8,8 @@ services:
       - VIRTUAL_HOST=sirius.localhost
       - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-dev
       - OAUTHLIB_INSECURE_TRANSPORT=1
+    volumes:
+      - ./:/sirius
 
   sirius-database:
     ports:
