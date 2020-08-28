@@ -55,7 +55,7 @@ class TestPrinting(base.Base):
         from sirius.models.messages import Message
         from sirius.protocol.protocol_loop import _get_next_command_id
 
-        # put 100 dummy messages in the database
+        # put 10 dummy messages in the database
         dummy_messages = [
             Message(
                 print_id=_get_next_command_id(),
@@ -63,14 +63,14 @@ class TestPrinting(base.Base):
                 sender_name='[dummy test data]',
                 target_printer=self.printer,
             ) 
-            for _ in range(100)
+            for _ in range(10)
         ]
         
         for dummy_message in dummy_messages:
             db.session.add(dummy_message)
         
         db.session.commit()
-        self.assertEqual(self.printer.messages.count(), 100)
+        self.assertEqual(self.printer.messages.count(), 10)
 
         # add one more
         r = self.client.post(self.get_print_url(), data=dict(
@@ -79,8 +79,8 @@ class TestPrinting(base.Base):
             message='hello'
         ))
 
-        # check there are still 100
-        self.assertEqual(self.printer.messages.count(), 100)
+        # check there are still 10
+        self.assertEqual(self.printer.messages.count(), 10)
 
         # check that the oldest message was deleted
         self.assertNotIn(dummy_messages[0], self.printer.messages)

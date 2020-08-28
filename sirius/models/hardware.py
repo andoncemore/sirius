@@ -160,13 +160,13 @@ class Printer(db.Model):
     
     def trim_old_messages(self):
         '''
-        Keep up to 100 messages per printer to stop them building up forever.
+        Keep up to 10 messages per printer to stop them building up forever.
 
         Should be called after a message is added.
         '''
         from sirius.models import messages as model_messages
 
-        old_messages = self.messages.order_by(desc('created')).offset(100).all()
+        old_messages = self.messages.order_by(desc('created')).offset(10).all()
         for old_message in old_messages:
             db.session.delete(old_message)
 
