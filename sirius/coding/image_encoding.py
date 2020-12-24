@@ -58,7 +58,7 @@ def rle(lengths):
 
 def crop_384(im):
     w, h = im.size
-    return im.crop((0, 0, 384, min(h, 10000)))
+    return im.crop((0, 0, 500, min(h, 10000)))
 
 
 def convert_to_1bit(im):
@@ -113,7 +113,7 @@ def html_to_png(html):
         driver = webdriver.PhantomJS(
             'phantomjs', desired_capabilities=caps,
             service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any'])
-        driver.set_window_size(384, 5)
+        driver.set_window_size(500, 5)
 
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
