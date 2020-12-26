@@ -5,7 +5,7 @@ services:
     ports:
       - 5000:5000
     environment:
-      - VIRTUAL_HOST=sirius.localhost
+      - VIRTUAL_HOST=96.30.195.205
       - DATABASE_URL=postgresql://postgres:plop@sirius-database/sirius-dev
       - OAUTHLIB_INSECURE_TRANSPORT=1
     volumes:
