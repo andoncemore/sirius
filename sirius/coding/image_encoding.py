@@ -109,12 +109,13 @@ def html_to_png(html):
     from selenium import webdriver
     driver = None
     try:
+        
         caps = {'acceptSslCerts': True}
         driver = webdriver.PhantomJS(
             'phantomjs', desired_capabilities=caps,
             service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any'])
         driver.set_window_size(500, 5)
-
+        print("Created New Driver")
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
         with tempfile.NamedTemporaryFile(suffix='.html') as f:
@@ -127,8 +128,11 @@ def html_to_png(html):
             data = io.BytesIO(driver.get_screenshot_as_png())
 
         return data
+    except Exception as e:
+        print("THERE WAS AN ERROR: ", e.__class__ )
     finally:
         if driver:
+            print("Closing Driver")
             driver.quit()
 
 
