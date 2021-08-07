@@ -3,6 +3,7 @@ from itertools import groupby
 import struct
 import io
 import tempfile
+import time
 
 WHITE = '\xff'
 BLACK = '\x00'
@@ -125,7 +126,9 @@ def html_to_png(html):
                 f.write(html)
             f.flush()
             driver.get('file://' + f.name)
+            time.sleep(2)
             data = io.BytesIO(driver.get_screenshot_as_png())
+            time.sleep(2)
 
         return data
     except Exception as e:
