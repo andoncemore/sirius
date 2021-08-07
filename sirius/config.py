@@ -25,6 +25,11 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
@@ -40,7 +45,7 @@ class HerokuConfig(ProductionConfig):
 
     @classmethod
     def init_app(cls, app):
-        ProductionConfig.init_app(app)
+        DevelopmentConfig.init_app(app)
 
         # handle proxy server headers
         from werkzeug.contrib.fixers import ProxyFix

@@ -13,8 +13,8 @@ from sirius.models.db import db
 
 logger = logging.getLogger(__name__)
 
-api_key=os.environ.get('TWITTER_CONSUMER_KEY', 'DdrpQ1uqKuQouwbCsC6OMA4oF')
-api_secret=os.environ.get('TWITTER_CONSUMER_SECRET', 'S8XGuhptJ8QIJVmSuIk7k8wv3ULUfMiCh9x1b19PmKSsBh1VDM')
+api_key=os.environ.get('TWITTER_CONSUMER_KEY', 'lGJi82Uf8xTkQsvqXMiwGEm4K')
+api_secret=os.environ.get('TWITTER_CONSUMER_SECRET', 'lE6bNaItnu50dTg5y8srzSipreECc7xE9TMR9mIja7RE9KVV62')
 
 # TODO move the consumer_key/secret to flask configuration. The
 # current key is a test app that redirects to 127.0.0.1:8000.

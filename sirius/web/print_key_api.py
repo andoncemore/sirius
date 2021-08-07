@@ -81,7 +81,7 @@ def print_key(print_key_secret):
         except hardware.Printer.OfflineError:
             return json.dumps({'status': 'failed-offline'}), 504, {'content-type': 'application/json'}
         
-        return json.dumps({'status': 'sent'}), 200, {'content-type': 'application/json'}
+        return json.dumps({'status': 'sent'}), 200, {'content-type': 'application/json', 'access-control-allow-origin': '*'}
 
 def html_for_plain_text(text):
     return '<div style="white-space: pre-wrap">{text}</div>'.format(

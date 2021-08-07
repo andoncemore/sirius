@@ -19,7 +19,7 @@ from sirius.emulate import commands as emulate_commands
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
-app = webapp.create_app(os.getenv('FLASK_CONFIG', 'default'))
+app = webapp.create_app(os.getenv('FLASK_CONFIG', 'heroku'))
 manager = Manager(app)
 migrate = Migrate(app, webapp.db)
 
