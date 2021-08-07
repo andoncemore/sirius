@@ -3,6 +3,7 @@ from itertools import groupby
 import struct
 import io
 import tempfile
+import time
 
 WHITE = '\xff'
 BLACK = '\x00'
@@ -58,7 +59,7 @@ def rle(lengths):
 
 def crop_384(im):
     w, h = im.size
-    return im.crop((0, 0, 384, min(h, 10000)))
+    return im.crop((0, 0, 500, min(h, 10000)))
 
 
 def convert_to_1bit(im):
@@ -70,7 +71,6 @@ def rle_from_bw(bw_image):
     :param bw_image: A mode "1" PIL image.
     :returns: A 2-tuple of (number of pixels, RLE-encoded pixel data)
     """
-    bw_image = bw_image.transpose(Image.ROTATE_180)
     pixels = list(bw_image.getdata())
 
     # Group each run length into lists each list is (result of
@@ -113,7 +113,7 @@ def html_to_png(html):
         driver = webdriver.PhantomJS(
             'phantomjs', desired_capabilities=caps,
             service_args=['--ignore-ssl-errors=true', '--ssl-protocol=any'])
-        driver.set_window_size(384, 5)
+        driver.set_window_size(500, 5)
 
         # note that the .html suffix is required to make phantomjs
         # pick up the mime-type and render correctly.
@@ -124,7 +124,9 @@ def html_to_png(html):
                 f.write(html)
             f.flush()
             driver.get('file://' + f.name)
+            time.sleep(2)
             data = io.BytesIO(driver.get_screenshot_as_png())
+            time.sleep(2)
 
         return data
     finally:

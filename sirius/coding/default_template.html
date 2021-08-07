@@ -16,26 +16,14 @@
            first line must be white because of a bug in the image encoder,
            that inverts the image if the first pixel is black
         */
-        margin-top: 1px;
-        margin-bottom: 80px;
-        border: 1px;
-        font-family: Helvetica, Arial, sans-serif;
-        font-size: 30px;
-      }
-      h1, h2, h3, h4, h5, h6 {
-        margin-bottom: 20px;
+        margin: 1px 0 0 0;
+        font-family: monospace;
       }
 
-      li {
-        margin-bottom: 0.5em;
-      }
-
-      .header {
-        font-weight: 800;
-        text-transform: uppercase;
-        font-size: 18px;
-        margin-bottom: 18px;
-        text-align: center;
+      h1, h2, h3, h4, h5, h6, p, ol, ul {
+        margin: 0;
+        padding: 0;
+        font-weight:normal;
       }
 
       img {
@@ -44,9 +32,6 @@
     </style>
   </head>
   <body>
-    <div class="header">
-      {{ date.strftime('%H:%M | %d-%b-%Y') }}{% if from_name %} | {{ from_name }}{% endif %}
-    </div>
     {{ raw_html|safe }}
   </body>
 </html>
